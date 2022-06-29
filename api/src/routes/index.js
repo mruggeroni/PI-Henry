@@ -1,6 +1,4 @@
 const { Router } = require('express');
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
 const AXIOS = require('axios');
 const { Videogame, Genre, Platform } = require('../db');
 const { Op } = require('sequelize');
@@ -13,31 +11,39 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 
 // *** GET todos los juegos o por busqueda ***
-const GET_API_GAMES = async (SEARCH, PAGE = 1) => {
-    let apiInfo;
-    if (SEARCH) {
-        apiInfo = await AXIOS.get(`https://api.rawg.io/api/games?search=${SEARCH}&page=${PAGE}&key=${API_KEY}`);
-    } else {
-        apiInfo = await AXIOS.get(`https://api.rawg.io/api/games?page=${PAGE}&key=${API_KEY}`);
-    };
-    const API_INFO = await apiInfo.data.results.map(({ id, background_image, name, genres }) => {
-        return {
-            id,
-            img: background_image,
-            name,
-            genres: genres.map(({ name }) => name),
-        };
-    });
-    return API_INFO;
+const GET_API_GAMES = async (SEARCH) => {
+    const API_INFO = [],
+        PROMISES = [],
+        PAGES = [1, 2, 3, 4, 5];
+    PAGES.forEach((page) => PROMISES.push(
+        AXIOS.get(`https://api.rawg.io/api/games?${SEARCH ? `search=${SEARCH}&` : ""}page=${page}&key=${API_KEY}`)
+            .then(res => res.data.results)
+            .then(games => games.map(({ id, name, background_image, rating, genres }) => {
+                return {
+                    id,
+                    name,
+                    img: background_image,
+                    rating,
+                    genres: genres.map(({ name }) => name),
+                    createdInDb: false,
+                };
+            }))
+            .then(games => API_INFO.push(...games))
+            .catch(error => error.message)
+    ));
+    await Promise.all(PROMISES);
+    let games = JSON.parse(JSON.stringify(API_INFO));
+    return games;
 };
 
 const GET_DB_GAMES = async (SEARCH) => {
-    return await Videogame.findAll({
+    const GAMES = await Videogame.findAll({
         [SEARCH && "where"]: {
             name: {
                 [Op.like]: decodeURIComponent(SEARCH)
             },
         },
+        attributes: ['id', 'name', 'img', 'rating'],
         include: {
             model: Genre,
             attributes: ['name'],
@@ -46,6 +52,13 @@ const GET_DB_GAMES = async (SEARCH) => {
             },
         },
     });
+    let games = JSON.parse(JSON.stringify(GAMES));
+    games = games.map(game => {
+        game.genres = game.Genres.map(({ name }) => name);
+        delete game.Genres;
+        return game;
+    });
+    return games;
 };
 
 const GET_ALL_GAMES = async (SEARCH) => {
@@ -58,7 +71,7 @@ const GET_ALL_GAMES = async (SEARCH) => {
 // *** GET detalles de juego po ID ***
 const GET_API_GAME_DETAILS = async (ID) => {
     const API_URL = await AXIOS.get(`https://api.rawg.io/api/games/${ID}?key=${API_KEY}`);
-    const { id, background_image, name, description_raw, genres, rating, released, platforms } = await API_URL.data;
+    const { id, background_image, name, description_raw, genres, rating, released, platforms } = API_URL.data;
     const API_INFO = {
         id,
         img: background_image,
@@ -68,12 +81,15 @@ const GET_API_GAME_DETAILS = async (ID) => {
         rating,
         released,
         platforms: platforms.map(({ platform: { name } }) => name),
+        createdInDb: false,
     };
-    return API_INFO;
+    let game = JSON.parse(JSON.stringify(API_INFO));
+    return game;
 };
 
 const GET_DB_GAME_DETAILS = async (ID) => {
-    return await Videogame.findByPk(ID, {
+    const GAME = await Videogame.findByPk(ID, {
+        attributes: ['id', 'name', 'img', 'description', 'rating', 'released'],
         include: [{
             model: Genre,
             attributes: ['name'],
@@ -89,57 +105,102 @@ const GET_DB_GAME_DETAILS = async (ID) => {
             },
         }]
     });
+    let game = JSON.parse(JSON.stringify(GAME));
+    game.genres = game.Genres.map(({ name }) => name);
+    game.platforms = game.Platforms.map(({ name }) => name);
+    delete game.Genres;
+    delete game.Platforms;
+    return game;
 };
 
 const GET_ALL_GAME_DETAILS = async (ID) => {
-    if (!Number(ID)) {
-        return await GET_DB_GAME_DETAILS(ID);
-    } else {
-        return await GET_API_GAME_DETAILS(ID);
-    };
+    return !Number(ID) ? await GET_DB_GAME_DETAILS(ID) : await GET_API_GAME_DETAILS(ID);
 };
 
 // *** POST juego a la DB ***
-const POST_GAME = async (name, img, description, rating, released, createdInDb, genres, platforms) => {
+const POST_GAME = async (name, img, description, rating, released, genres, platforms) => {
     let gameCreated = await Videogame.create({
         name, 
         img, 
         description, 
         rating, 
         released,
-        createdInDb
     });
-    let genreDb = await Genre.findAll({ where: { name: genres }})
-    gameCreated.addGenres(genreDb);
+    let genresDb = await Genre.findAll({ where: { name: genres }})
     let platformsDb = await Platform.findAll({ where: { name: platforms }})
+    gameCreated.addGenres(genresDb);
     gameCreated.addPlatforms(platformsDb);
-    return gameCreated;
+    return "Successful game creation";
 };
 
 // *** GET todos los generos ***
-const GET_API_GENRES = async (PAGE = 1) => {
-    const API_URL = await AXIOS.get(`https://api.rawg.io/api/genres?page=${PAGE}&key=${API_KEY}`);
-    const API_INFO = await API_URL.data.results.map(({ name }) => name);
-    API_INFO.forEach(gen => {
-        Genre.findOrCreate({
+const GET_GENRES = async () => {
+    // const API_URL = await AXIOS.get(`https://api.rawg.io/api/genres?page=${PAGE}&key=${API_KEY}`);
+    // const API_INFO = await API_URL.data.results.map(({ name }) => name);
+    // API_INFO.forEach(gen => {
+    //     Genre.findOrCreate({
+    //         where: { name: gen }
+    //     });
+    // });
+    // const GENRES = await Genre.findAll();
+    // return GENRES;
+
+    const API_INFO = [],
+    PROMISES = [],
+    PAGES = [1, 2];
+    PAGES.forEach((page) => PROMISES.push(
+        AXIOS.get(`https://api.rawg.io/api/genres?page=${page}&key=${API_KEY}`)
+            .then(res => res.data.results)
+            .then(genres => genres.map(({ name }) => name))
+            .then(genres => API_INFO.push(...genres))
+            .catch(error => error)
+    ));
+    await Promise.all(PROMISES);
+    await Promise.all(API_INFO.map(gen => {
+        return Genre.findOrCreate({
             where: { name: gen }
-        });
-    });
+        })
+        .catch(err => console.log(err.message));
+    }));
     const GENRES = await Genre.findAll();
-    return GENRES;
+    let genres = JSON.parse(JSON.stringify(GENRES));
+    genres = genres.map(({ name }) => name);
+    return genres;
 };
 
 // *** GET todas las plataformas ***
-const GET_API_PLATFORMS = async (PAGE = 1) => {  // si dejan usar la ruta de la API
-    const API_URL = await AXIOS.get(`https://api.rawg.io/api/platforms?page=${PAGE}&key=${API_KEY}`);
-    const API_INFO = await API_URL.data.results.map(({ name }) => name);
-    API_INFO.forEach(platf => {
-        Platform.findOrCreate({
+const GET_PLATFORMS = async () => {  // si dejan usar la ruta de la API
+    // const API_URL = await AXIOS.get(`https://api.rawg.io/api/platforms?page=${PAGE}&key=${API_KEY}`);
+    // const API_INFO = await API_URL.data.results.map(({ name }) => name);
+    // API_INFO.forEach(platf => {
+    //     Platform.findOrCreate({
+    //         where: { name: platf }
+    //     });
+    // });
+    // const PLATFORMS = await Platform.findAll();
+    // return PLATFORMS;
+
+    const API_INFO = [],
+    PROMISES = [],
+    PAGES = [1, 2];
+    PAGES.forEach((page) => PROMISES.push(
+        AXIOS.get(`https://api.rawg.io/api/platforms?page=${page}&key=${API_KEY}`)
+            .then(res => res.data.results)
+            .then(platforms => platforms.map(({ name }) => name))
+            .then(platforms => API_INFO.push(...platforms))
+            .catch(error => error)
+    ));
+    await Promise.all(PROMISES);
+    await Promise.all(API_INFO.map(platf => {
+        return Platform.findOrCreate({
             where: { name: platf }
-        });
-    });
+        })
+        .catch(err => console.log(err.message));
+    }));
     const PLATFORMS = await Platform.findAll();
-    return PLATFORMS;
+    let platforms = JSON.parse(JSON.stringify(PLATFORMS));
+    platforms = platforms.map(({ name }) => name);
+    return platforms;
 };
 
 
@@ -153,7 +214,7 @@ router.get('/videogames', async (req, res) => {
         res.status(200).json(GAMES) :
         res.status(400).send('No se han encontrado resultados');
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).send(error.message);
     };
 });
 
@@ -165,15 +226,16 @@ router.get('/videogame/:id', async (req, res) => {
         res.status(200).json(GAME) :
         res.status(400).send('No se ha encontrado el juego para el ID solicitado');
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).send(error.message);
     };
 });
 
 router.post('/videogame', async (req, res) => {
-    const { name, img, description, rating, released, createdInDb, genres, platforms } = req.body;
+    const { name, img, description, rating, released, genres, platforms } = req.body;
     try {
-        if (!name || !img || !description || !rating || !released || !genres.length || !platforms.length) throw new Error('No se han ingresado todos los datos');
-        await POST_GAME(name, img, description, rating, released, createdInDb, genres, platforms);
+        if (!name || !img || !description || !rating || !released || !genres || !platforms) 
+            throw new Error('No se han ingresado todos los datos');
+        await POST_GAME(name, img, description, rating, released, genres, platforms);
         res.status(200).send(`Juego ${name} creado con exito`);
     } catch (error) {
         res.status(400).send(error.message);
@@ -182,19 +244,19 @@ router.post('/videogame', async (req, res) => {
 
 router.get('/genres', async (req, res) => {
     try {
-        const GENRES = await GET_API_GENRES();
+        const GENRES = await GET_GENRES();
         res.status(200).json(GENRES);
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).send(error.message);
     };
 });
 
 router.get('/platforms', async (req, res) => {
     try {
-        const PLATFORMS = await GET_API_PLATFORMS();
+        const PLATFORMS = await GET_PLATFORMS();
         res.status(200).json(PLATFORMS);
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).send(error.message);
     };
 });
 

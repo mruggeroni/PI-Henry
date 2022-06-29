@@ -1,11 +1,25 @@
 import './App.css';
+import { Route, Switch } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import Home from './components/Home';
+import About from './components/About';
+import GameDetails from './components/GameDetails';
+import Nav from './components/Nav';
+import GameCreation from './components/GameCreation';
 
-function App() {
+
+export default function App() {
   return (
     <div className="App">
-      <h1>Henry Videogames</h1>
+      <Route path="/home" component={Nav} />
+      <Switch>
+        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/home" component={Home} />
+        <Route path="/home/about" component={About} />
+        <Route path="/home/game/:id" component={GameDetails} />
+        <Route path="/home/creategame" component={GameCreation} />
+        {/* <Route path="/home/edit/:id" component={"XXXXXXXX"} /> */}
+      </Switch>
     </div>
   );
-}
-
-export default App;
+};

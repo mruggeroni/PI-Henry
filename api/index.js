@@ -25,4 +25,14 @@ conn.sync({ force: false }).then(() => {  // force: false para no resetear DB
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
   });
+  // try {
+  //   await GET_ALL_GAMES();
+  //   /* 
+  //   Acciones asincronicas a ejecutar al levantar el servidor.
+  //   Es más seguro que se ejecuten y no tener problemas de subida de información al comienzo, a diferencia del front donde puede existir interferencia con el 'force' en peticiones grandes de datos.
+  //   */
+  // console.log('Servidor Inicializado');
+  // } catch (error) {
+  //   console.log(error.message)
+  // };
 });
