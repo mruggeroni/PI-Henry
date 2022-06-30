@@ -16,9 +16,14 @@ export default function App() {
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/home" component={Home} />
         <Route path="/home/about" component={About} />
-        <Route path="/home/game/:id" component={GameDetails} />
+        <Route 
+          path="/home/game/:id" 
+          render={(match) => <GameDetails id={match.params.id} />}
+        />
         <Route path="/home/creategame" component={GameCreation} />
-        {/* <Route path="/home/edit/:id" component={"XXXXXXXX"} /> */}
+        {/* <Route path="/home/edit/:id" >
+          <GameCreation id={id} />
+        </Route> */}
       </Switch>
     </div>
   );

@@ -6,15 +6,14 @@ import { Link, NavLink } from 'react-router-dom';
 // import editImage from '../img/****MODIFICAR****';
 
 
-export default function GameDetails(props) {
+export default function GameDetails({ id }) {
     const dispatch = useDispatch();
-    const { id } = props.match.params;
 
     useEffect(() => {
         dispatch(getGameDetail(id));
     }, [dispatch, id]);
 
-    const GAME = useSelector(state => state.GameDetail)
+    const GAME = useSelector(state => state.gameDetail)
 
     return (
         <div>

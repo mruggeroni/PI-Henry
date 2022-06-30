@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { Link } from "react-router-dom";
-import { getGames,  /* getGamesFound, */   getGenres  /* , getPlatforms */, filtersAndSorts  } from "../redux/actions";
+import { getGames,  getGamesFound,   getGenres  /* , getPlatforms */, filtersAndSorts  } from "../redux/actions";
+// import { Origin_Filter, Genre_Filter, Sort } from "../redux/reducer";
 import FiltersAndSorts from "./FiltersAndSorts";
 import GameCard from "./GameCard";
 import Pagination from "./Pagination";
@@ -18,11 +19,12 @@ export default function Home() {
 
     const GAMES = useSelector(state => state.games);
     const GENRES = useSelector(state => state.genres);
-    // const GAMES_FOUND = useSelector(state => state.gamesFound);
 
     const [orden, setOrden] = useState("none");
     const [currentPage, setCurrentPage] = useState(1);
     const [gamesPerPage/* , setGamesPerPage */] = useState(15);
+    const [name, setName] = useState("");
+
     const indexOfFirstGame = (currentPage - 1) * gamesPerPage,
         indexOfLastGame = (currentPage) * gamesPerPage,
         currentGames = GAMES.slice(indexOfFirstGame, indexOfLastGame);
@@ -30,26 +32,59 @@ export default function Home() {
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
-    const handleChanges = (e) => {
-        if (e.target.name === "Sort" || orden !== "none") {
-            e.preventDefault();
-            dispatch(filtersAndSorts({
-                e_target_name: e.target.name, 
-                e_target_value: e.target.value,
-            }));
-            setCurrentPage(1);
-            e.target.name === "Sort" ? setOrden(e.target.value) : setOrden(orden);
-        } else {
-            dispatch(filtersAndSorts({
-                e_target_name: e.target.name, 
-                e_target_value: e.target.value,
-            }));
-        };
+
+    const handleFilterSortChanges = (e) => {
+        if (e.target.id === "Sort" || orden !== "none") e.preventDefault();
+        dispatch(filtersAndSorts({
+            e_target_id: e.target.id, 
+            e_target_value: e.target.value,
+        }));
+        e.target.id === "Sort" ? setOrden(e.target.value) : setOrden(orden);
+        setCurrentPage(1);
+    };
+
+    const O_F = useRef(""),
+        G_F = useRef(""),
+        S = useRef("");
+
+    function handleSubmitSearch(e) {
+        e.preventDefault();
+        dispatch(getGamesFound(name));
+        // dispatch(filtersAndSorts({
+        //     e_target_id: Origin_Filter, 
+        //     e_target_value: "All",
+        // }));
+        O_F.current.value = "All";  // document.getElementById(Origin_Filter).value = "All";
+        G_F.current.value = "All";  // document.getElementById(Genre_Filter).value = "All";
+        S.current.value = "none";  // document.getElementById(Sort).value = "none";
+        setCurrentPage(1);
+    };
+    function handleInputSearchChange(e) {
+        e.preventDefault();
+        setName(e.target.value)
+    };
+    function handleLeaveSearch(e) {
+        dispatch(getGames());
+        O_F.current.value = "All";
+        G_F.current.value = "All";
+        S.current.value = "none";
+        setName("");
+        setCurrentPage(1);
     };
 
     return (
         <div>
-            <FiltersAndSorts handleChanges={handleChanges} genres={GENRES} />
+            <FiltersAndSorts 
+                handleFilterSortChanges={handleFilterSortChanges} 
+                genres={GENRES}
+                O_F={O_F}
+                G_F={G_F}
+                S={S}
+                handleSubmitSearch={handleSubmitSearch}
+                handleInputSearchChange={handleInputSearchChange}
+                handleLeaveSearch={handleLeaveSearch}
+                name={name}
+            />
             <h1>VideoGames App</h1>
             {currentGames && <Pagination 
                 numberOfAllGames={GAMES?.length} 

@@ -1,8 +1,8 @@
 import { GET_GAMES, GET_GAMES_FOUND, GET_GAME_DETAIL, CREATE_GAME, GET_GENRES, GET_PLATFORMS/* , DELETE_GAME, MODIFY_GAME */, FILTERS_AND_SORTS } from "../actions";
 
 
-const Origin_Filter = "Origin_Filter",
-  Genre_Filter = "Genre_Filter",
+export const Origin_Filter = "OriginFilter",
+  Genre_Filter = "GenreFilter",
   Sort = "Sort";
 
 const initialState = {
@@ -26,27 +26,38 @@ export default function rootReducer(state = initialState, action) {
         games: action.payload,
         allGames: action.payload,
       };
+
     case GET_GAMES_FOUND: 
       return {
         ...state,
         games: action.payload,
+        allGames: action.payload,
+        // filterSort: {
+        //   [Origin_Filter]: "All",
+        //   [Genre_Filter]: "All",
+        //   [Sort]: "none",
+        // },
       };
+
     case GET_GAME_DETAIL: 
       return {
         ...state,
         gameDetail: action.payload,
       };
+
     case CREATE_GAME: 
       return {
         ...state,
         games: [...state.games, action.payload],
         allGames: [...state.games, action.payload],
       };
+
     case GET_GENRES: 
       return {
         ...state,
         genres: action.payload,
       };
+
     case GET_PLATFORMS: 
       return {
         ...state,
@@ -56,13 +67,6 @@ export default function rootReducer(state = initialState, action) {
 
     // Filtros y Ordenamientos:
     case FILTERS_AND_SORTS: 
-      const { e_target_name, e_target_value } = action.payload,
-        Sort_VALUE = state.filterSort[Sort],
-        Genre_Filter_VALUE = state.filterSort[Genre_Filter],
-        Origin_Filter_VALUE = state.filterSort[Origin_Filter];
-      let allGames = JSON.parse(JSON.stringify(state.allGames)),
-        games = state.games;
-
       const filterByOrigin = (games, valueActive) => {
         return valueActive === 'All' ? 
         games : 
@@ -93,20 +97,31 @@ export default function rootReducer(state = initialState, action) {
         return games;
       };
 
-      switch (e_target_name) {
+      const { e_target_id, e_target_value } = action.payload,
+        Sort_VALUE = state.filterSort[Sort],
+        Genre_Filter_VALUE = state.filterSort[Genre_Filter],
+        Origin_Filter_VALUE = state.filterSort[Origin_Filter];
+      let games = state.games,
+        allGames = JSON.parse(JSON.stringify(state.allGames));
+
+
+      switch (e_target_id) {
         case Origin_Filter:
           games = filterByOrigin(allGames, e_target_value);
           games = filterByGenre(games, Genre_Filter_VALUE);
           games = sort(games, Sort_VALUE);
           break;
+
         case Genre_Filter:
           games = filterByGenre(allGames, e_target_value);
           games = filterByOrigin(games, Origin_Filter_VALUE);
           games = sort(games, Sort_VALUE);
           break;
+
         case Sort:
           games = sort(games, e_target_value);
           break;
+
         default:
           break;
       };
@@ -116,9 +131,10 @@ export default function rootReducer(state = initialState, action) {
         games,
         filterSort: {
           ...state.filterSort,
-          [e_target_name]: e_target_value,
+          [e_target_id]: e_target_value,
         },
       };
+
     default: return {...state};
   };
 };

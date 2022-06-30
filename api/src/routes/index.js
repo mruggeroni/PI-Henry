@@ -40,10 +40,10 @@ const GET_DB_GAMES = async (SEARCH) => {
     const GAMES = await Videogame.findAll({
         [SEARCH && "where"]: {
             name: {
-                [Op.like]: decodeURIComponent(SEARCH)
+                [Op.substring]: decodeURIComponent(SEARCH).toLowerCase()
             },
         },
-        attributes: ['id', 'name', 'img', 'rating'],
+        attributes: ['id', 'name', 'img', 'rating', 'createdInDb'],
         include: {
             model: Genre,
             attributes: ['name'],
@@ -89,7 +89,7 @@ const GET_API_GAME_DETAILS = async (ID) => {
 
 const GET_DB_GAME_DETAILS = async (ID) => {
     const GAME = await Videogame.findByPk(ID, {
-        attributes: ['id', 'name', 'img', 'description', 'rating', 'released'],
+        attributes: ['id', 'name', 'img', 'description', 'rating', 'released', 'createdInDb'],
         include: [{
             model: Genre,
             attributes: ['name'],
@@ -135,16 +135,6 @@ const POST_GAME = async (name, img, description, rating, released, genres, platf
 
 // *** GET todos los generos ***
 const GET_GENRES = async () => {
-    // const API_URL = await AXIOS.get(`https://api.rawg.io/api/genres?page=${PAGE}&key=${API_KEY}`);
-    // const API_INFO = await API_URL.data.results.map(({ name }) => name);
-    // API_INFO.forEach(gen => {
-    //     Genre.findOrCreate({
-    //         where: { name: gen }
-    //     });
-    // });
-    // const GENRES = await Genre.findAll();
-    // return GENRES;
-
     const API_INFO = [],
     PROMISES = [],
     PAGES = [1, 2];
@@ -170,16 +160,6 @@ const GET_GENRES = async () => {
 
 // *** GET todas las plataformas ***
 const GET_PLATFORMS = async () => {  // si dejan usar la ruta de la API
-    // const API_URL = await AXIOS.get(`https://api.rawg.io/api/platforms?page=${PAGE}&key=${API_KEY}`);
-    // const API_INFO = await API_URL.data.results.map(({ name }) => name);
-    // API_INFO.forEach(platf => {
-    //     Platform.findOrCreate({
-    //         where: { name: platf }
-    //     });
-    // });
-    // const PLATFORMS = await Platform.findAll();
-    // return PLATFORMS;
-
     const API_INFO = [],
     PROMISES = [],
     PAGES = [1, 2];

@@ -8,7 +8,6 @@ export default function Pagination({ numberOfAllGames, gamesPerPage, paginado, c
         pageNumbers.push(i);
     };
 
-console.log(currentPage, pageNumbers.length)
     return (
         <div>
             <ul>
@@ -42,6 +41,11 @@ console.log(currentPage, pageNumbers.length)
                     </li>
                 }
             </ul>
+            <div>
+                <span>
+                    <b>{`${currentPage} / ${pageNumbers.length + (pageNumbers.length ? 0 : 1)}`}</b>
+                </span>
+            </div>
         </div>
     );
 };
