@@ -1,11 +1,11 @@
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
-import LandingPage from './components/LandingPage';
-import Home from './components/Home';
-import About from './components/About';
-import GameDetails from './components/GameDetails';
-import Nav from './components/Nav';
-import GameCreation from './components/GameCreation';
+import LandingPage from './components/LandingPage/LandingPage.jsx';
+import Home from './components/Home/Home.jsx';
+import About from './components/About/About.jsx';
+import GameDetails from './components/GameDetails/GameDetails.jsx';
+import Nav from './components/Nav/Nav.jsx';
+import GameCreation from './components/GameCreation/GameCreation.jsx';
 
 
 export default function App() {
@@ -15,15 +15,10 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/home" component={Home} />
-        <Route path="/home/about" component={About} />
-        <Route 
-          path="/home/game/:id" 
-          render={(match) => <GameDetails id={match.params.id} />}
-        />
-        <Route path="/home/creategame" component={GameCreation} />
-        {/* <Route path="/home/edit/:id" >
-          <GameCreation id={id} />
-        </Route> */}
+        <Route exact path="/home/about" component={About} />
+        <Route exact path="/home/creategame" component={GameCreation} />
+        <Route exact path="/home/game/edit/:id" component={GameCreation} />
+        <Route exact path="/home/game/:id" component={GameDetails} />
       </Switch>
     </div>
   );

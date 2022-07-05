@@ -4,7 +4,9 @@ import AXIOS from 'axios'
 export const GET_GAMES = "GET_GAMES",
   GET_GAMES_FOUND = "GET_GAMES_FOUND",
   GET_GAME_DETAIL = "GET_GAME_DETAIL",
-  CREATE_GAME = "CREATE_GAME",
+  POST_GAME = "POST_GAME",
+  PUT_GAME = "PUT_GAME",
+  DELETE_GAME = "DELETE_GAME",
   GET_GENRES = "GET_GENRES",
   GET_PLATFORMS = "GET_PLATFORMS",
   FILTERS_AND_SORTS = "FILTERS_AND_SORTS";
@@ -55,16 +57,51 @@ export function getGameDetail(id) {
   };
 };
 
-export function createGame(game) {
-  return async function () {
+export function postGame(game) {
+  return async function (dispatch) {
     try {
-      await AXIOS.post('http://localhost:3001/videogame', game);
-      return {
-        type: CREATE_GAME,
+      const MESSAGE = await AXIOS.post('http://localhost:3001/videogame', game);
+      return dispatch({
+        type: POST_GAME,
         payload: {
-          ...game
+          MESSAGE,
+          game,
         },
-      };
+      });
+    } catch(error) {
+      return console.error(error.message);
+    };
+  };
+};
+
+export function putGame(game) {
+  return async function (dispatch) {
+    try {
+      const MESSAGE = await AXIOS.put(`http://localhost:3001/videogame/${game.id}`, game);
+      return dispatch({
+        type: PUT_GAME,
+        payload: {
+          MESSAGE,
+          game,
+        },
+      });
+    } catch(error) {
+      return console.error(error.message);
+    };
+  };
+};
+
+export function deleteGame(id) {
+  return async function (dispatch) {
+    try {
+      const MESSAGE = await AXIOS.delete(`http://localhost:3001/videogame/${id}`);
+      return dispatch({
+        type: DELETE_GAME,
+        payload:{
+          MESSAGE,
+          id,
+        },
+      });
     } catch(error) {
       return console.error(error.message);
     };

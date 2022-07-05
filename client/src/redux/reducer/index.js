@@ -1,4 +1,4 @@
-import { GET_GAMES, GET_GAMES_FOUND, GET_GAME_DETAIL, CREATE_GAME, GET_GENRES, GET_PLATFORMS/* , DELETE_GAME, MODIFY_GAME */, FILTERS_AND_SORTS } from "../actions";
+import { GET_GAMES, GET_GAMES_FOUND, GET_GAME_DETAIL, POST_GAME, GET_GENRES, GET_PLATFORMS, DELETE_GAME, PUT_GAME, FILTERS_AND_SORTS } from "../actions";
 
 
 export const Origin_Filter = "OriginFilter",
@@ -40,11 +40,34 @@ export default function rootReducer(state = initialState, action) {
         gameDetail: action.payload,
       };
 
-    case CREATE_GAME: 
+    case POST_GAME: 
+      const GAMES_POST = [...state.games, action.payload.game];
       return {
         ...state,
-        games: [...state.games, action.payload],
-        allGames: [...state.games, action.payload],
+        games: GAMES_POST,
+        allGames: GAMES_POST,
+      };
+
+    case PUT_GAME: 
+      const GAMES_PUT = [...state.games.map(game => 
+        game.id === action.payload.game.id ? 
+        action.payload.game : 
+        game
+      )];
+      return {
+        ...state,
+        games: GAMES_PUT,
+        allGames: GAMES_PUT,
+      };
+
+    case DELETE_GAME: 
+      const GAMES_DELETE = [...state.games.filter(game => 
+        game.id !== action.payload.id
+      )];
+      return {
+        ...state,
+        games: GAMES_DELETE,
+        allGames: GAMES_DELETE,
       };
 
     case GET_GENRES: 
