@@ -1,20 +1,78 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Prompt, useParams/* , useHistory */ } from "react-router-dom";
-import { getGameDetail, getGenres, getPlatforms, postGame, putGame } from "../../redux/actions";
+import { NavLink, Prompt, useParams, useHistory } from "react-router-dom";
+import { getGameDetail, getGames, getGenres, getPlatforms, postGame, putGame } from "../../redux/actions";
 import GameDetails from '../GameDetails/GameDetails';
-import imagenDefault from "../../img/videogame-default.jpg";
+
+
+
+function validation(input, GAMES /* ,errors ,e */) {
+    const ERRORS = {};  // se puede inicializar en {...errors}, borrar el error viejo para ese e.target.name, y acto seguido envolver los if por tipo de input
+// name validate
+    if (!input.name) {
+        ERRORS.name = 'The name is required.';
+
+    } else if (input.name.length < 3 || 25 < input.name.length) {
+        ERRORS.name = 'The name must be 3 to 25 characters length.';
+
+    } else if (GAMES?.findIndex(game => input.name === game.name) >= 0) {
+        ERRORS.name = 'The name already exists. This must be unique.';
+    };
+
+// image validate
+    // if (/^https:\/\/\S+$/.test(input.img)) {
+    //     ERRORS.img = 'The image must be a URL rute.';
+    // };
+
+// description validate
+    if (!input.description) {
+        ERRORS.description = 'The description is required.';
+
+    } else if (input.description.length < 10 || 500 < input.description.length) {
+        ERRORS.description = 'The description must be 10 to 500 characters length.';
+    };
+
+// released validate
+    if (!input.released) {
+        ERRORS.released = 'The released is required.';
+    }; 
+
+// rating validate
+    if (!input.rating) {
+        ERRORS.rating = 'The rating is required.';
+
+    } else if (!isNaN(input.rating) && `${input.rating}`.slice(1).length >= 2) {
+        ERRORS.rating = 'The rating must be a float number.';
+
+    } else if (input.rating < 0 || 5 < input.rating) {
+        ERRORS.rating = 'The rating value must be between 0 and 5 inclusive.';
+    };
+
+// genres validate
+    if (!input.genres.length || 5 < input.genres.length) {
+        ERRORS.genres = 'It must contain at least one genre (5 maximum).';
+    };
+
+// platforms validate
+    if (!input.platforms.length || 5 < input.platforms.length) {
+        ERRORS.platforms = 'It must contain at least one platform (5 maximum).';
+    };
+    return ERRORS;
+};
+
 
 
 export default function GameCreation() {
     const dispatch = useDispatch();
     const params = useParams();
-    // const history = useHistory();
+    const history = useHistory();
     const id = params.id;
+    const imagenDefault = "https://media.istockphoto.com/photos/neon-sign-on-a-brick-wall-glowing-gamepad-icon-abstract-background-picture-id1306435820?b=1&k=20&m=1306435820&s=170667a&w=0&h=2w7KFk2tBOZ3lvKWRXC0DzHoW2l2MtMBGpGOhRz152E=";
 
     useEffect(() => {
         dispatch(getGenres());
         dispatch(getPlatforms());
+        dispatch(getGames());
     }, [dispatch]);
 
     useEffect(() => {
@@ -26,6 +84,7 @@ export default function GameCreation() {
     const GENRES = useSelector(state => state.genres);
     const PLATFORMS = useSelector(state => state.platforms);
     const GAME_DETAIL = useSelector(state => state.gameDetail);
+    const GAMES = useSelector(state => state.games);
 
     const [input, setInput] = useState({
         name: id ? GAME_DETAIL.name : "", 
@@ -36,57 +95,77 @@ export default function GameCreation() {
         genres: id ? GAME_DETAIL.genres : [],
         platforms: id ? GAME_DETAIL.platforms : [],
     });
+
+    const [errors, setErrors] = useState({});
+
     let refImage = useRef("");
 
-    const handleChange = (e) => {
-        e.preventDefault();
-        // console.log(refImage.current.value)
-        // console.log(e.target.value, input.rating, e.target.type);
-        if (e.target.name !== "genres" && e.target.name !== "platforms") {
-            // if (e.target.name === "rating" && (typeof parseFloat(e.target.value) !== "number")) return;
-            // if (e.target.name === "rating" && (e.target.value < 0 || 5 < e.target.value)) return;
-            setInput({
-                ...input,
-                [e.target.name]: e.target.value,
-            });
-        } else {
-            !input[e.target.name].includes(e.target.value) ?
-            setInput({
-                ...input,
-                [e.target.name]: input[e.target.name].length < 10 ? [...input[e.target.name], e.target.value] : [...input[e.target.name]],
-            }) :
-            setInput({
-                ...input,
-                [e.target.name]: input[e.target.name].filter(element => element !== e.target.value),
-            });
-        };
-    };
-    const handleImageChange = (e) => {
-        setInput({
-            ...input,
-            [e.target.name]: refImage.current.value ? refImage.current.value : imagenDefault,
-        });
-    };
     const handleDeleteOption = (e) => {
-        setInput({
+        let newInput = {
             ...input,
             [e.target.name]: input[e.target.name].filter(element => element !== e.target.id),
-        });
+        };
+        setInput(newInput);
+        setErrors(validation(newInput, GAMES));
+    };
+    const handleChange = (e) => {
+        e.preventDefault();
+        let newInput = input;
+        switch (e.target.name) {
+            case 'name':
+            case 'description':
+            case 'released':
+            case 'rating':
+                newInput = {
+                    ...input,
+                    [e.target.name]: e.target.value,
+                };
+                break;
+            case 'img':
+                newInput = {
+                    ...input,
+                    [e.target.name]: refImage.current.value ? 
+                        refImage.current.value : 
+                        imagenDefault,
+                };
+                break;
+            case 'genres':
+            case 'platforms':
+                !input[e.target.name].includes(e.target.value) ?
+                newInput = {
+                    ...input,
+                    [e.target.name]: input[e.target.name].length < 5 ? 
+                        [...input[e.target.name], e.target.value] : 
+                        [...input[e.target.name]],
+                } :
+                newInput = {
+                    ...input,
+                    [e.target.name]: input[e.target.name].filter(element => element !== e.target.value),
+                };
+                break;
+            default:
+                break;
+        }
+        setInput(newInput);  // se iniciliza una varible "newInput" con el input nuevo y luego se realiza el setInput(newInput). El setInput(input) al llevar tiempo, puede renderizar el error viejo al entrar antes a la funcion validadora.
+        setErrors(validation(newInput, GAMES));
     };
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrors(validation(input, GAMES));
         id ? dispatch(putGame(id)) : dispatch(postGame(input));
-        // setInput({
-        //     name: id ? GAME_DETAIL.name : "", 
-        //     img: id ? GAME_DETAIL.img : imagenDefault, 
-        //     description: id ? GAME_DETAIL.description : "", 
-        //     rating: id ? GAME_DETAIL.rating : 0, 
-        //     released: id ? GAME_DETAIL.released : "",
-        //     genres: id ? GAME_DETAIL.genres : [],
-        //     platforms: id ? GAME_DETAIL.platforms : [],
-        // });
-        alert(id ? "successfully updated game" : "game created successfully");
-        // history.push("/home");
+        setInput({
+            name: id ? GAME_DETAIL.name : "", 
+            img: id ? GAME_DETAIL.img : imagenDefault, 
+            description: id ? GAME_DETAIL.description : "", 
+            rating: id ? GAME_DETAIL.rating : 0, 
+            released: id ? GAME_DETAIL.released : "",
+            genres: id ? GAME_DETAIL.genres : [],
+            platforms: id ? GAME_DETAIL.platforms : [],
+        });
+        const MESSAGE = id ? "Successfully updated game." : "Game created successfully."
+        if (window.confirm(`${MESSAGE} Do you want go to home?`)) {
+            history.push("/home");
+        };
     };
 
 
@@ -104,7 +183,7 @@ export default function GameCreation() {
                     platforms={input.platforms}
                     createdInDb={true}
                     update={true}
-            />
+                />
             </div>
             <div>
                 <form onSubmit={(e) => handleSubmit(e)} >
@@ -122,6 +201,11 @@ export default function GameCreation() {
                             value={input.name} 
                             onChange={(e) => handleChange(e)}
                         />
+                        {
+                            errors.name ?
+                            <p>{errors.name}</p> :
+                            <></>
+                        }
                     </div>
                     <div>
                         <label htmlFor="img">Image</label>
@@ -135,15 +219,21 @@ export default function GameCreation() {
                             /* accept=".jpg,.png,.svg" */
                             ref={refImage}
                             /* value={input.img} */ 
-                            onError={(e) => setInput({
-                                ...input,
-
-                            })}
-                            onChange={(e) => handleImageChange(e)}
+                            onChange={(e) => handleChange(e)}
                         />
-                        <div>
-                            <img src={input.img === imagenDefault ? /* "#" */input.img : input.img} alt="preview_image" />
-                        </div>
+                        <img 
+                            src={input.img} 
+                            alt="preview_image" 
+                            onError={(e) => setErrors({
+                                ...errors,
+                                img: 'The image is not rendered.',
+                            }) /* tambien se puede pasar un e.target.id al validate, creando alli otro caso para este error*/}
+                        />
+                        {
+                            errors.img ?
+                            <p>{errors.img}</p> :
+                            <></>
+                        }
                     </div>
                     <div>
                         <label htmlFor="description">Description</label>
@@ -157,6 +247,11 @@ export default function GameCreation() {
                             value={input.description} 
                             onChange={(e) => handleChange(e)}
                         />
+                        {
+                            errors.description ?
+                            <p>{errors.description}</p> :
+                            <></>
+                        }
                     </div>
                     <div>
                         <label htmlFor="rating">Rating</label>
@@ -184,6 +279,11 @@ export default function GameCreation() {
                             value={parseFloat(String(input.rating)).toFixed(2)} 
                             onChange={(e) => handleChange(e)}
                         />
+                        {
+                            errors.rating ?
+                            <p>{errors.rating}</p> :
+                            <></>
+                        }
                     </div>
                     <div>
                         <label htmlFor="released">Released</label>
@@ -196,6 +296,11 @@ export default function GameCreation() {
                             value={input.released} 
                             onChange={(e) => handleChange(e)}
                         />
+                        {
+                            errors.released ?
+                            <p>{errors.released}</p> :
+                            <></>
+                        }
                     </div>
                     <div>
                         <label htmlFor="genres">Genres</label>
@@ -220,6 +325,11 @@ export default function GameCreation() {
                                 })
                             }
                         </select>
+                        {
+                            errors.genres ?
+                            <p>{errors.genres}</p> :
+                            <></>
+                        }
                         <div>
                             {
                                 input.genres?.length ? 
@@ -259,6 +369,11 @@ export default function GameCreation() {
                                 })
                             }
                         </select>
+                        {
+                            errors.platforms ?
+                            <p>{errors.platforms}</p> :
+                            <></>
+                        }
                         <div>
                             {
                                 input.platforms?.length ? 
@@ -280,25 +395,22 @@ export default function GameCreation() {
                             type='submit' 
                             id="submit" 
                             name="submit"
-                            disabled={(!input.name || !input.description || !input.rating || !input.released || !input.genres.length || !input.platforms.length)} 
+                            disabled={Object.keys(errors).length || !input.name || !input.description || !input.released || !input.rating || !input.genres.length || !input.platforms.length} 
                         >
                             <b>{id ? "update" : "Create"}</b>
                         </button>
+                        <NavLink to='/home' >
+                            <button 
+                                id="cancel" 
+                                name="cancel" 
+                            >
+                                <b>Cancel</b>
+                            </button>
+                        </NavLink>
                     </div>
                 </form>
-                <div>
-                    <NavLink to='/home' >
-                        <button 
-                            id="cancel" 
-                            name="cancel" 
-                        >
-                            <b>Cancel</b>
-                        </button>
-                    </NavLink>
-                </div>
                 <Prompt 
-                    when={(e) => e.target.id === "cancel" /* || e.target.id === "submit" */} 
-                    message={/* (e) => e.target.id === "cancel" ? "Are you sure leave to game cretion?" : `${id ? "Successfully game updated.\n" : "Successfully game created.\n"} */'Are you sure leave to game cretion?'/* ` */}
+                    message='Are you sure leave to game cretion?'
                 />
             </div>
         </div>
