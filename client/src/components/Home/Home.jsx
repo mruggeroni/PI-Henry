@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { Link } from "react-router-dom";
-import { getGames,  getGamesFound,   getGenres  /* , getPlatforms */, filtersAndSorts  } from "../redux/actions";
+import { getGames,  getGamesFound,   getGenres/* , getPlatforms */, filtersAndSorts } from "../../redux/actions";
 // import { Origin_Filter, Genre_Filter, Sort } from "../redux/reducer";
-import FiltersAndSorts from "./FiltersAndSorts";
-import GameCard from "./GameCard";
-import Pagination from "./Pagination";
+import FiltersAndSorts from "../FiltersAndSorts/FiltersAndSorts";
+import GameCard from "../GameCard/GameCard";
+import Pagination from "../Pagination/Pagination";
+import s from './Home.module.css';
 
 
 export default function Home() {
@@ -50,10 +51,6 @@ export default function Home() {
     function handleSubmitSearch(e) {
         e.preventDefault();
         dispatch(getGamesFound(name));
-        // dispatch(filtersAndSorts({
-        //     e_target_id: Origin_Filter, 
-        //     e_target_value: "All",
-        // }));
         O_F.current.value = "All";  // document.getElementById(Origin_Filter).value = "All";
         G_F.current.value = "All";  // document.getElementById(Genre_Filter).value = "All";
         S.current.value = "none";  // document.getElementById(Sort).value = "none";
@@ -86,30 +83,33 @@ export default function Home() {
                 name={name}
             />
             <h1>VideoGames App</h1>
-            {currentGames && <Pagination 
+            {currentGames ? <Pagination 
                 numberOfAllGames={GAMES?.length} 
                 gamesPerPage={gamesPerPage} 
                 paginado={paginado}
                 currentPage={currentPage} 
-            />}
-            {currentGames?.map(({ id, name, img, rating, genres}) => {
-                return (
-                    <GameCard 
-                        key={id} 
-                        id={id} 
-                        name={name} 
-                        img={img} 
-                        rating={rating} 
-                        genres={genres} 
-                    />
-                )
-            })}
-            {currentGames && <Pagination 
+            /> : ""}
+            <div className={s.cards} >
+                {currentGames?.map(({ id, name, img, rating, genres, createdInDb}) => {
+                    return (
+                        <GameCard 
+                            key={id} 
+                            id={id} 
+                            name={name} 
+                            img={img} 
+                            rating={rating} 
+                            genres={genres} 
+                            createdInDb={createdInDb}
+                        />
+                    )
+                })}
+            </div>
+            {currentGames ? <Pagination 
                 numberOfAllGames={GAMES?.length} 
                 gamesPerPage={gamesPerPage} 
                 paginado={paginado}
                 currentPage={currentPage} 
-            />}
+            /> : ""}
         </div>
     );
 };

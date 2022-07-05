@@ -1,0 +1,8 @@
+.cards {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}

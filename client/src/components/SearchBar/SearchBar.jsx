@@ -1,10 +1,11 @@
-import React/* , { useState } */ from "react";
+import React from "react";
 
 
 export default function SearchBar({ handleSubmitSearch, handleInputSearchChange, handleLeaveSearch, name }) {
     return (
         <div>
             <form 
+                name="search"
                 onSubmit={e => handleSubmitSearch(e)} 
             >
                 <input

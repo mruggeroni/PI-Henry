@@ -1,0 +1,9 @@
+.filtersAndSorts {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+    justify-content: right;
+    background-color: rgba(13,23,38,0);
+    padding: 0.5rem 2rem;
+    font-size: .8rem;
+}
