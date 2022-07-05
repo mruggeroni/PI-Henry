@@ -128,9 +128,40 @@ const POST_GAME = async (name, img, description, rating, released, genres, platf
     });
     let genresDb = await Genre.findAll({ where: { name: genres }})
     let platformsDb = await Platform.findAll({ where: { name: platforms }})
-    gameCreated.addGenres(genresDb);
-    gameCreated.addPlatforms(platformsDb);
+    gameCreated.setGenres(genresDb);  // .addBars() hace lo mismo que .setBars() para un post, ya que inicialmente tiene la propiedad vacia
+    gameCreated.setPlatforms(platformsDb);
     return "Successful game creation";
+};
+
+// *** PUT juego en la DB ***
+const PUT_GAME = async (id, name, img, description, rating, released, genres, platforms) => {
+    await Videogame.update({
+        name, 
+        img, 
+        description, 
+        rating, 
+        released,
+    }, {
+        where: {
+            id,
+        }
+    });
+    let gameUpdated = await Videogame.findByPk(id);
+    let genresDb = await Genre.findAll({ where: { name: genres }})
+    let platformsDb = await Platform.findAll({ where: { name: platforms }})
+    gameUpdated.setGenres(genresDb);  // .addGenres() agrega a los existente, .setGenres() los vuelve a setear
+    gameUpdated.setPlatforms(platformsDb);
+    return "Successful game update";
+};
+
+// *** DELETE juego en la DB ***
+const DELETE_GAME = async (id) => {
+    await Videogame.destroy({
+        where: {
+            id,
+        }  // Borra tambien los datos de tablas intermedias ralacionados al elemento eliminado
+    });
+    return "Successful game delete";
 };
 
 // *** GET todos los generos ***
@@ -192,7 +223,7 @@ router.get('/videogames', async (req, res) => {
         const GAMES = await GET_ALL_GAMES(name);
         GAMES.length ?
         res.status(200).json(GAMES) :
-        res.status(400).send('No se han encontrado resultados');
+        res.status(404).send('No se han encontrado resultados');
     } catch (error) {
         res.status(400).send(error.message);
     };
@@ -204,7 +235,7 @@ router.get('/videogame/:id', async (req, res) => {
         const GAME = await GET_ALL_GAME_DETAILS(id);
         Object.keys(GAME).length ?
         res.status(200).json(GAME) :
-        res.status(400).send('No se ha encontrado el juego para el ID solicitado');
+        res.status(404).send('No se ha encontrado el juego para el ID solicitado');
     } catch (error) {
         res.status(400).send(error.message);
     };
@@ -213,10 +244,29 @@ router.get('/videogame/:id', async (req, res) => {
 router.post('/videogame', async (req, res) => {
     const { name, img, description, rating, released, genres, platforms } = req.body;
     try {
-        if (!name || !img || !description || !rating || !released || !genres || !platforms) 
-            throw new Error('No se han ingresado todos los datos');
-        await POST_GAME(name, img, description, rating, released, genres, platforms);
-        res.status(200).send(`Juego ${name} creado con exito`);
+        const messageResult = await POST_GAME(name, img, description, rating, released, genres, platforms);
+        res.status(201).send(messageResult);
+    } catch (error) {
+        res.status(400).send(error.message);
+    };
+});
+
+router.put('/videogame/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, img, description, rating, released, genres, platforms } = req.body;
+    try {
+        const messageResult = await PUT_GAME(id, name, img, description, rating, released, genres, platforms);
+        res.status(200).send(messageResult);
+    } catch (error) {
+        res.status(400).send(error.message);
+    };
+});
+
+router.delete('/videogame/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const messageResult = await DELETE_GAME(id);
+        res.status(200).send(messageResult);
     } catch (error) {
         res.status(400).send(error.message);
     };

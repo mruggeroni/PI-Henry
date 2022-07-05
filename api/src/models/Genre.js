@@ -7,6 +7,15 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Please enter some genre'
+        },
+        len: {
+          args: [2,30],
+          msg: 'genre must be 2 to 30 characters length'
+        },
+      },
     },
   }, {
     timestamps: false,

@@ -32,11 +32,6 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         games: action.payload,
         allGames: action.payload,
-        // filterSort: {
-        //   [Origin_Filter]: "All",
-        //   [Genre_Filter]: "All",
-        //   [Sort]: "none",
-        // },
       };
 
     case GET_GAME_DETAIL: 
