@@ -1,8 +1,14 @@
-.background_detail {
+.background_creation {
     background-color: rgb(44, 13, 83);
+    padding: 5% 2.5% 2.5% 2.5%;
 }
 
-.card_detail {
+.content_creation {
+    display: flex;
+    flex-direction: row;
+}
+
+.card_creation {
     width: 50vw;
     height: auto;
     justify-items: center;
@@ -17,26 +23,9 @@
     color: rgb(231, 231, 231);
 }
 
-.header_detail {
-    font-weight: 500;
-    font-size: 1.5rem;
-    margin-bottom: 0.4rem;
-}
-
-.card_text_detail {
-    font-size: 1rem;
-    letter-spacing: .1rem;
-    line-height: 1.2;
-    margin-bottom: 0.8rem;
-}
-
-.cardContent_detail {
-    padding: 0.4rem;
-}
-
-.img_detail {
+.img_creation {
     display: block;
-    width: 90%;
+    width: 30%;
     height: auto;
     object-fit: cover;
     border-radius: 0.4rem;

@@ -1,9 +1,17 @@
 .nav {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: rgba(13,23,38,.5843137254901961);
+    justify-content: space-around;
+    background-color: rgb(31, 39, 50);
     box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
     padding: 0.5rem 2rem;
-    margin-bottom: 1rem;
+    margin: 0;
+    z-index: 1;
+}
+
+.link_nav {
+    text-decoration: none;
+    color: whitesmoke;
+    cursor: pointer;
 }

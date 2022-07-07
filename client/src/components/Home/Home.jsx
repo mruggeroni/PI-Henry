@@ -7,6 +7,7 @@ import FiltersAndSorts from "../FiltersAndSorts/FiltersAndSorts";
 import GameCard from "../GameCard/GameCard";
 import Pagination from "../Pagination/Pagination";
 import s from './Home.module.css';
+import video from '../../img/Black-Loop.mp4';
 
 
 export default function Home() {
@@ -46,7 +47,18 @@ export default function Home() {
 
     const O_F = useRef(""),
         G_F = useRef(""),
-        S = useRef("");
+        S = useRef(""),
+        vid1 = useRef(),
+        vid2 = useRef(),
+        vid3 = useRef(),
+        vid4 = useRef();
+    
+    useEffect(() => {
+        vid1.current.play();
+        vid2.current.play();
+        vid3.current.play();
+        vid4.current.play();
+    });
 
     function handleSubmitSearch(e) {
         e.preventDefault();
@@ -70,46 +82,92 @@ export default function Home() {
     };
 
     return (
-        <div>
-            <FiltersAndSorts 
-                handleFilterSortChanges={handleFilterSortChanges} 
-                genres={GENRES}
-                O_F={O_F}
-                G_F={G_F}
-                S={S}
-                handleSubmitSearch={handleSubmitSearch}
-                handleInputSearchChange={handleInputSearchChange}
-                handleLeaveSearch={handleLeaveSearch}
-                name={name}
-            />
-            <h1>VideoGames App</h1>
-            {currentGames ? <Pagination 
-                numberOfAllGames={GAMES?.length} 
-                gamesPerPage={gamesPerPage} 
-                paginado={paginado}
-                currentPage={currentPage} 
-            /> : ""}
-            <div className={s.cards} >
-                {currentGames?.map(({ id, name, img, rating, genres, createdInDb}) => {
-                    return (
-                        <GameCard 
-                            key={id} 
-                            id={id} 
-                            name={name} 
-                            img={img} 
-                            rating={rating} 
-                            genres={genres} 
-                            createdInDb={createdInDb}
-                        />
-                    )
-                })}
+        <div className={s.home} >
+            <video 
+                key="video1" 
+                id="video1" 
+                src={video} 
+                type="video/mp4" 
+                ref={vid1} 
+                className={s.vid1_home} 
+                autoplay 
+                muted 
+                loop 
+            ></video>
+            <video 
+                key="video2" 
+                id="video2" 
+                src={video} 
+                type="video/mp4" 
+                ref={vid2} 
+                className={s.vid2_home} 
+                autoplay 
+                muted 
+                loop 
+            ></video>
+            <video 
+                key="video3" 
+                id="video3" 
+                src={video} 
+                type="video/mp4" 
+                ref={vid3} 
+                className={s.vid3_home} 
+                autoplay 
+                muted 
+                loop 
+            ></video>
+            <video 
+                key="video4" 
+                id="video4" 
+                src={video} 
+                type="video/mp4" 
+                ref={vid4} 
+                className={s.vid4_home} 
+                autoplay 
+                muted 
+                loop 
+            ></video>
+            <div className={s.content_home} >
+                <FiltersAndSorts 
+                    handleFilterSortChanges={handleFilterSortChanges} 
+                    genres={GENRES}
+                    O_F={O_F}
+                    G_F={G_F}
+                    S={S}
+                    handleSubmitSearch={handleSubmitSearch}
+                    handleInputSearchChange={handleInputSearchChange}
+                    handleLeaveSearch={handleLeaveSearch}
+                    name={name}
+                />
+                {currentGames ? <Pagination 
+                    numberOfAllGames={GAMES?.length} 
+                    gamesPerPage={gamesPerPage} 
+                    paginado={paginado}
+                    currentPage={currentPage} 
+                /> : ""}
+                <h1>VideoGames App</h1>
+                <div className={s.cards} >
+                    {currentGames?.map(({ id, name, img, rating, genres, createdInDb}) => {
+                        return (
+                            <GameCard 
+                                key={id} 
+                                id={id} 
+                                name={name} 
+                                img={img} 
+                                rating={rating} 
+                                genres={genres} 
+                                createdInDb={createdInDb}
+                            />
+                        )
+                    })}
+                </div>
+                {currentGames ? <Pagination 
+                    numberOfAllGames={GAMES?.length} 
+                    gamesPerPage={gamesPerPage} 
+                    paginado={paginado}
+                    currentPage={currentPage} 
+                /> : ""}
             </div>
-            {currentGames ? <Pagination 
-                numberOfAllGames={GAMES?.length} 
-                gamesPerPage={gamesPerPage} 
-                paginado={paginado}
-                currentPage={currentPage} 
-            /> : ""}
         </div>
     );
 };

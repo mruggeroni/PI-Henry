@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGameDetail } from '../../redux/actions';
 import { Link, NavLink, useParams, useHistory } from 'react-router-dom';
 import { deleteGame } from '../../redux/actions';
+import s from './GameDetails.module.css';
 // import editImage from '../img/****MODIFICAR****';
 
 
@@ -16,77 +17,80 @@ export default function GameDetails(/* { match } */game) {
         if (id) {
             dispatch(getGameDetail(id));
         };
+        return () => {
+            dispatch(getGameDetail());
+        };
     }, [dispatch, id]);
 
     const GAME = useSelector(state => state.gameDetail)
 
-    const { name, img, description, rating, released, genres, platforms, createdInDb, update } = id ? GAME : game;
+    const { name, img, description, rating, released, genres, platforms, createdInDb } = !game.update ? GAME : game;
 
     function handleDelete() {
-        dispatch(deleteGame(id));
-        history.push("/home");
+        if (window.confirm(`Do you want delete "${name}"?`)) {
+            dispatch(deleteGame(id));
+            history.push("/home");
+        };
     };
 
     return (
-        <div>
-            {
-                createdInDb && !update ?
-                <div>
-                    <button onClick={() => handleDelete()} >
-                        <b>DELETE</b>
-                    </button>
-                    <Link to={`/home/game/edit/${id}`}>
-                        <img src={`${/* editImage */"img"}`} alt={`${name}`} />
-                    </Link>
-                </div> :
-                <></>
-            }
-            <div>
-                <h1>
+        <div className={s.background_detail} >
+            <div className={s.card_detail} >
+                {
+                    createdInDb && !game.update ?
+                    <div>
+                        <button onClick={() => handleDelete()} >
+                            <b>DELETE</b>
+                        </button>
+                        <Link to={`/home/game/edit/${id}`}>
+                            <img src={`${"editImage"}`} alt={`${name}`} />
+                        </Link>
+                    </div> :
+                    <></>
+                }
+                <img src={`${img}`} alt={`${name}`} className={s.img_detail} />
+                <h1 className={s.header_detail} >
                     <strong>{name}</strong>
                 </h1>
+                <div className={s.cardContent_detail} >
+                    <p className={s.card_text_detail} >
+                        <b>{`${parseFloat(String(rating)).toFixed(2)}`}</b>
+                    </p>
+                </div>
+                <div className={s.cardContent_detail} >
+                    <p className={s.card_text_detail} >
+                        <b>{`${released}`}</b>
+                    </p>
+                </div>
+                <div className={s.cardContent_detail} >
+                    <p className={s.card_text_detail} >
+                        <b>Generos:{genres?.reduce((text, genre) => text ? 
+                            `${text} - ${genre}` : 
+                            `${genre}`, "")}</b>
+                    </p>
+                </div>
+                <div className={s.cardContent_detail} >
+                    <p className={s.card_text_detail} >
+                        <b>Plataformas:{platforms?.reduce((text, platform) => text ? 
+                            `${text} - ${platform}` : 
+                            `${platform}`, "")}</b>
+                    </p>
+                </div>
+                <div className={s.cardContent_detail} >
+                    <p className={s.card_text_detail} >{`${description}`}</p>
+                </div>
+                {
+                    !game.update ?
+                    <div className={s.cardContent_detail} >
+                        <NavLink to="/home">
+                            <button>
+                                <b>Volver</b>
+                            </button>
+                        </NavLink>
+                    </div> :
+                    <></>
+                }
             </div>
-            <div>
-                <img src={`${img}`} alt={`${name}`} />
-            </div>
-            <div>
-                <span>
-                    <b>{`${rating}`}</b>
-                </span>
-            </div>
-            <div>
-                <span>
-                    <b>{`${released}`}</b>
-                </span>
-            </div>
-            <div>
-                <span>
-                    <b>Generos:{genres?.reduce((text, genre) => text ? 
-                        `${text} - ${genre}` : 
-                        `${genre}`, "")}</b>
-                </span>
-            </div>
-            <div>
-                <span>
-                    <b>Plataformas:{platforms?.reduce((text, platform) => text ? 
-                        `${text} - ${platform}` : 
-                        `${platform}`, "")}</b>
-                </span>
-            </div>
-            <div>
-                <p>{`${description}`}</p>
-            </div>
-            {
-                id ?
-                <div>
-                    <NavLink to="/home">
-                        <button>
-                            <b>Volver</b>
-                        </button>
-                    </NavLink>
-                </div> :
-                <></>
-            }
         </div>
     );
 };

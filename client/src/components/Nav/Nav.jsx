@@ -1,14 +1,14 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import s from './Nav.module.css';
 
 
 export default function Nav() {
     return (
         <div className={s.nav} >
-            <Link to="/home">Home</Link>
-            <Link to="/home/about">About</Link>
-            <Link to="/home/creategame">Crear Videojuego</Link>
+            <NavLink className={s.link_nav} to="/home">Home</NavLink>
+            <NavLink className={s.link_nav} to="/home/about">About</NavLink>
+            <NavLink className={s.link_nav} to="/home/creategame">Crear Videojuego</NavLink>
         </div>
     );
 };

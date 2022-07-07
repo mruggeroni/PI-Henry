@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Prompt, useParams, useHistory } from "react-router-dom";
 import { getGameDetail, getGames, getGenres, getPlatforms, postGame, putGame } from "../../redux/actions";
 import GameDetails from '../GameDetails/GameDetails';
+import s from './GameCreation.module.css';
 
 
 
@@ -41,7 +42,7 @@ function validation(input, GAMES /* ,errors ,e */) {
     if (!input.rating) {
         ERRORS.rating = 'The rating is required.';
 
-    } else if (!isNaN(input.rating) && `${input.rating}`.slice(1).length >= 2) {
+    } else if (typeof input.rating === "number") {
         ERRORS.rating = 'The rating must be a float number.';
 
     } else if (input.rating < 0 || 5 < input.rating) {
@@ -87,13 +88,13 @@ export default function GameCreation() {
     const GAMES = useSelector(state => state.games);
 
     const [input, setInput] = useState({
-        name: id ? GAME_DETAIL.name : "", 
-        img: id ? GAME_DETAIL.img : imagenDefault, 
-        description: id ? GAME_DETAIL.description : "", 
-        rating: id ? GAME_DETAIL.rating : 0, 
-        released: id ? GAME_DETAIL.released : "",
-        genres: id ? GAME_DETAIL.genres : [],
-        platforms: id ? GAME_DETAIL.platforms : [],
+        name: id ? GAME_DETAIL?.name : "", 
+        img: id ? GAME_DETAIL?.img : imagenDefault, 
+        description: id ? GAME_DETAIL?.description : "", 
+        rating: id ? GAME_DETAIL?.rating : 0, 
+        released: id ? GAME_DETAIL?.released : "",
+        genres: id ? GAME_DETAIL?.genres : [],
+        platforms: id ? GAME_DETAIL?.platforms : [],
     });
 
     const [errors, setErrors] = useState({});
@@ -152,7 +153,7 @@ export default function GameCreation() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setErrors(validation(input, GAMES));
-        id ? dispatch(putGame(id)) : dispatch(postGame(input));
+        id ? dispatch(putGame({...input, id})) : dispatch(postGame(input));
         setInput({
             name: id ? GAME_DETAIL.name : "", 
             img: id ? GAME_DETAIL.img : imagenDefault, 
@@ -169,249 +170,254 @@ export default function GameCreation() {
     };
 
 
-    return (
-        <div>
+    return ( 
+        <div className={s.background_creation} >
             <h1>VideoGame Creation</h1>
-            <div>
-                <GameDetails 
-                    name={input.name}
-                    img={input.img} 
-                    description={input.description}
-                    rating={input.rating}
-                    released={input.released}
-                    genres={input.genres}
-                    platforms={input.platforms}
-                    createdInDb={true}
-                    update={true}
-                />
-            </div>
-            <div>
-                <form onSubmit={(e) => handleSubmit(e)} >
-                    <div>
-                        <label htmlFor="name">Name</label>
-                        <input 
-                            type="text" 
-                            key="name"
-                            id="name"
-                            name="name" 
-                            title="name of the new videogame"
-                            placeholder="My new VideoGame"
-                            minLength={5}
-                            maxLength={20}
-                            value={input.name} 
-                            onChange={(e) => handleChange(e)}
-                        />
-                        {
-                            errors.name ?
-                            <p>{errors.name}</p> :
-                            <></>
-                        }
-                    </div>
-                    <div>
-                        <label htmlFor="img">Image</label>
-                        <input 
-                            type="text"/* "file" */ 
-                            key="img"
-                            id="img"
-                            name="img" 
-                            title="add main image to the new videogame"
-                            placeholder="https://file.jpg"
-                            /* accept=".jpg,.png,.svg" */
-                            ref={refImage}
-                            /* value={input.img} */ 
-                            onChange={(e) => handleChange(e)}
-                        />
-                        <img 
-                            src={input.img} 
-                            alt="preview_image" 
-                            onError={(e) => setErrors({
-                                ...errors,
-                                img: 'The image is not rendered.',
-                            }) /* tambien se puede pasar un e.target.id al validate, creando alli otro caso para este error*/}
-                        />
-                        {
-                            errors.img ?
-                            <p>{errors.img}</p> :
-                            <></>
-                        }
-                    </div>
-                    <div>
-                        <label htmlFor="description">Description</label>
-                        <textarea 
-                            key="description"
-                            id="description"
-                            name="description" 
-                            title="description of the new videogame"
-                            placeholder="Description"
-                            maxLength={500}
-                            value={input.description} 
-                            onChange={(e) => handleChange(e)}
-                        />
-                        {
-                            errors.description ?
-                            <p>{errors.description}</p> :
-                            <></>
-                        }
-                    </div>
-                    <div>
-                        <label htmlFor="rating">Rating</label>
-                        <input 
-                            type="range" 
-                            key="ratingR"
-                            id="ratingR"
-                            name="rating" 
-                            title="rating of the new videogame"
-                            min={0}
-                            max={5}
-                            step={0.01}
-                            value={input.rating} 
-                            onChange={(e) => handleChange(e)}
-                        />
-                        <input 
-                            type="number" 
-                            key="ratingN"
-                            id="ratingN"
-                            name="rating" 
-                            title="rating of the new videogame"
-                            min={0}
-                            max={5}
-                            step={0.01}
-                            value={parseFloat(String(input.rating)).toFixed(2)} 
-                            onChange={(e) => handleChange(e)}
-                        />
-                        {
-                            errors.rating ?
-                            <p>{errors.rating}</p> :
-                            <></>
-                        }
-                    </div>
-                    <div>
-                        <label htmlFor="released">Released</label>
-                        <input 
-                            type="date" 
-                            key="released"
-                            id="released"
-                            name="released" 
-                            title="released of the new videogame"
-                            value={input.released} 
-                            onChange={(e) => handleChange(e)}
-                        />
-                        {
-                            errors.released ?
-                            <p>{errors.released}</p> :
-                            <></>
-                        }
-                    </div>
-                    <div>
-                        <label htmlFor="genres">Genres</label>
-                        <select 
-                            key="genres"
-                            id="genres"
-                            name="genres"
-                            title="add generes" 
-                            size={10}
-                            multiple 
-                            onChange={(e) => handleChange(e)} 
-                        >
-                            {
-                                GENRES?.map(genre => {
-                                    return (
-                                        <option 
-                                            key={genre} 
-                                            id={genre}
-                                            value={`${genre}`}
-                                        >{genre}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                        {
-                            errors.genres ?
-                            <p>{errors.genres}</p> :
-                            <></>
-                        }
+            <div className={s.content_creation} >
+                <div>
+                    <GameDetails 
+                        name={input.name}
+                        img={input.img} 
+                        description={input.description}
+                        rating={input.rating}
+                        released={input.released}
+                        genres={input.genres}
+                        platforms={input.platforms}
+                        createdInDb={true}
+                        update={true}
+                    />
+                </div>
+                <div className={s.card_creation} >
+                    <form onSubmit={(e) => handleSubmit(e)} >
                         <div>
+                            <label htmlFor="name">Name</label>
+                            <input 
+                                type="text" 
+                                key="name"
+                                id="name"
+                                name="name" 
+                                title="name of the new videogame"
+                                placeholder="My new VideoGame"
+                                minLength={5}
+                                maxLength={20}
+                                value={input.name} 
+                                onChange={(e) => handleChange(e)}
+                            />
                             {
-                                input.genres?.length ? 
-                                input.genres?.map(genre => {
-                                    return (
-                                        <button 
-                                            key={genre} 
-                                            id={genre} 
-                                            name="genres" 
-                                            onClick={e => handleDeleteOption(e)} 
-                                        >{genre}</button>
-                                    )
-                                }) : ""
+                                errors.name ?
+                                <p>{errors.name}</p> :
+                                <></>
                             }
                         </div>
-                    </div>
-                    <div>
-                        <label htmlFor="platforms">Platforms</label>
-                        <select 
-                            key="platforms"
-                            id="platforms"
-                            name="platforms"
-                            title="add platforms" 
-                            size={10}
-                            multiple 
-                            onChange={(e) => handleChange(e)} 
-                        >
-                            {
-                                PLATFORMS?.map(platform => {
-                                    return (
-                                        <option 
-                                            key={platform} 
-                                            id={platform}
-                                            value={`${platform}`}
-                                        >{platform}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                        {
-                            errors.platforms ?
-                            <p>{errors.platforms}</p> :
-                            <></>
-                        }
                         <div>
+                            <label htmlFor="img">Image</label>
+                            <input 
+                                type="text"/* "file" */ 
+                                key="img"
+                                id="img"
+                                name="img" 
+                                title="add main image to the new videogame"
+                                placeholder="https://file.jpg"
+                                /* accept=".jpg,.png,.svg" */
+                                ref={refImage}
+                                /* value={input.img} */ 
+                                onChange={(e) => handleChange(e)}
+                            />
+                            <img 
+                                className={s.img_creation}
+                                src={input.img} 
+                                alt="preview_image" 
+                                onError={(e) => setErrors({
+                                    ...errors,
+                                    img: 'The image is not rendered.',
+                                }) /* tambien se puede pasar un e.target.id al validate, creando alli otro caso para este error*/}
+                            />
                             {
-                                input.platforms?.length ? 
-                                input.platforms?.map(platform => {
-                                    return (
-                                        <button 
-                                            key={platform} 
-                                            id={platform} 
-                                            name="platforms" 
-                                            onClick={e => handleDeleteOption(e)} 
-                                        >{platform}</button>
-                                    )
-                                }) : ""
+                                errors.img ?
+                                <p>{errors.img}</p> :
+                                <></>
                             }
                         </div>
-                    </div>
-                    <div>
-                        <button 
-                            type='submit' 
-                            id="submit" 
-                            name="submit"
-                            disabled={Object.keys(errors).length || !input.name || !input.description || !input.released || !input.rating || !input.genres.length || !input.platforms.length} 
-                        >
-                            <b>{id ? "update" : "Create"}</b>
-                        </button>
-                        <NavLink to='/home' >
+                        <div>
+                            <label htmlFor="description">Description</label>
+                            <textarea 
+                                key="description"
+                                id="description"
+                                name="description" 
+                                title="description of the new videogame"
+                                placeholder="Description"
+                                maxLength={500}
+                                value={input.description} 
+                                onChange={(e) => handleChange(e)}
+                            />
+                            {
+                                errors.description ?
+                                <p>{errors.description}</p> :
+                                <></>
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="rating">Rating</label>
+                            <input 
+                                type="range" 
+                                key="ratingR"
+                                id="ratingR"
+                                name="rating" 
+                                title="rating of the new videogame"
+                                min={0}
+                                max={5}
+                                step={0.01}
+                                value={input.rating} 
+                                onChange={(e) => handleChange(e)}
+                            />
+                            <input 
+                                type="number" 
+                                key="ratingN"
+                                id="ratingN"
+                                name="rating" 
+                                title="rating of the new videogame"
+                                min={0}
+                                max={5}
+                                step={0.01}
+                                value={parseFloat(String(input.rating)).toFixed(2)} 
+                                onChange={(e) => handleChange(e)}
+                            />
+                            {
+                                errors.rating ?
+                                <p>{errors.rating}</p> :
+                                <></>
+                            }
+                        </div>
+                        <div>
+                            <label htmlFor="released">Released</label>
+                            <input 
+                                type="date" 
+                                key="released"
+                                id="released"
+                                name="released" 
+                                title="released of the new videogame"
+                                value={input.released} 
+                                onChange={(e) => handleChange(e)}
+                            />
+                            {
+                                errors.released ?
+                                <p>{errors.released}</p> :
+                                <></>
+                            }
+                        </div>
+                        <div className={s.content_creation} >
+                            <div>
+                                <label htmlFor="genres">Genres</label>
+                                <select 
+                                    key="genres"
+                                    id="genres"
+                                    name="genres"
+                                    title="add generes" 
+                                    size={10}
+                                    multiple 
+                                    onChange={(e) => handleChange(e)} 
+                                >
+                                    {
+                                        GENRES?.map(genre => {
+                                            return (
+                                                <option 
+                                                    key={genre} 
+                                                    id={genre}
+                                                    value={`${genre}`}
+                                                >{genre}</option>
+                                            )
+                                        })
+                                    }
+                                </select>
+                                {
+                                    errors.genres ?
+                                    <p>{errors.genres}</p> :
+                                    <></>
+                                }
+                                <div>
+                                    {
+                                        input.genres?.length ? 
+                                        input.genres?.map(genre => {
+                                            return (
+                                                <button 
+                                                    key={genre} 
+                                                    id={genre} 
+                                                    name="genres" 
+                                                    onClick={e => handleDeleteOption(e)} 
+                                                >{genre}</button>
+                                            )
+                                        }) : ""
+                                    }
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="platforms">Platforms</label>
+                                <select 
+                                    key="platforms"
+                                    id="platforms"
+                                    name="platforms"
+                                    title="add platforms" 
+                                    size={10}
+                                    multiple 
+                                    onChange={(e) => handleChange(e)} 
+                                >
+                                    {
+                                        PLATFORMS?.map(platform => {
+                                            return (
+                                                <option 
+                                                    key={platform} 
+                                                    id={platform}
+                                                    value={`${platform}`}
+                                                >{platform}</option>
+                                            )
+                                        })
+                                    }
+                                </select>
+                                {
+                                    errors.platforms ?
+                                    <p>{errors.platforms}</p> :
+                                    <></>
+                                }
+                                <div>
+                                    {
+                                        input.platforms?.length ? 
+                                        input.platforms?.map(platform => {
+                                            return (
+                                                <button 
+                                                    key={platform} 
+                                                    id={platform} 
+                                                    name="platforms" 
+                                                    onClick={e => handleDeleteOption(e)} 
+                                                >{platform}</button>
+                                            )
+                                        }) : ""
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div>
                             <button 
-                                id="cancel" 
-                                name="cancel" 
+                                type='submit' 
+                                id="submit" 
+                                name="submit"
+                                disabled={Object.keys(errors).length || !input.name || !input.description || !input.released || !input.rating || !input.genres.length || !input.platforms.length} 
                             >
-                                <b>Cancel</b>
+                                <b>{id ? "update" : "Create"}</b>
                             </button>
-                        </NavLink>
-                    </div>
-                </form>
-                <Prompt 
-                    message='Are you sure leave to game cretion?'
-                />
+                            <NavLink to='/home' >
+                                <button 
+                                    id="cancel" 
+                                    name="cancel" 
+                                >
+                                    <b>Cancel</b>
+                                </button>
+                            </NavLink>
+                        </div>
+                    </form>
+                    <Prompt 
+                        message='Are you sure to go?'
+                    />
+                </div>
             </div>
         </div>
     );

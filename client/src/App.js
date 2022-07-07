@@ -1,4 +1,3 @@
-import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import LandingPage from './components/LandingPage/LandingPage.jsx';
 import Home from './components/Home/Home.jsx';
@@ -6,6 +5,8 @@ import About from './components/About/About.jsx';
 import GameDetails from './components/GameDetails/GameDetails.jsx';
 import Nav from './components/Nav/Nav.jsx';
 import GameCreation from './components/GameCreation/GameCreation.jsx';
+import './App.css';
+import './BackgroundVideo.css';
 
 
 export default function App() {

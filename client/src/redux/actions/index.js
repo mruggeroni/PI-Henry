@@ -45,7 +45,7 @@ export function getGamesFound(name) {
 export function getGameDetail(id) {
   return async function (dispatch) {
     try {
-      const JSON = await AXIOS.get(`http://localhost:3001/videogame/${id}`);
+      const JSON = id ? await AXIOS.get(`http://localhost:3001/videogame/${id}`) : { data: {} };
       const GAME = JSON.data;
       return dispatch({
         type: GET_GAME_DETAIL,

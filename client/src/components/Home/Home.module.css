@@ -1,3 +1,12 @@
+.home {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: #f1faee;
+    font-family: "Poppins","Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;
+}
+
 .cards {
     display: flex;
     flex-direction: row;
@@ -5,4 +14,29 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+
+.content_home {
+    position: relative;
+    z-index: 1;
+}
+
+.vid1_home {
+    margin-top: 0vh;
+    width: 100%;
+}
+
+.vid2_home {
+    margin-top: 100vh;
+    width: 100%;
+}
+
+.vid3_home {
+    margin-top: 200vh;
+    width: 100%;
+}
+
+.vid4_home {
+    margin-top: 300vh;
+    width: 100%;
 }
