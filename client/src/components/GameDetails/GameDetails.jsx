@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getGameDetail } from '../../redux/actions';
-import { Link, NavLink, useParams, useHistory } from 'react-router-dom';
+import { NavLink, useParams, useHistory } from 'react-router-dom';
 import { deleteGame } from '../../redux/actions';
+import Loading from "../Loading/Loading";
+import editImage from '../../img/edit.png';
+import deleteImage from '../../img/delete.png';
 import s from './GameDetails.module.css';
-// import editImage from '../img/****MODIFICAR****';
 
 
 export default function GameDetails(/* { match } */game) {
@@ -35,62 +37,83 @@ export default function GameDetails(/* { match } */game) {
 
     return (
         <div className={s.background_detail} >
-            <div className={s.card_detail} >
-                {
-                    createdInDb && !game.update ?
-                    <div>
-                        <button onClick={() => handleDelete()} >
-                            <b>DELETE</b>
-                        </button>
-                        <Link to={`/home/game/edit/${id}`}>
-                            <img src={`${"editImage"}`} alt={`${name}`} />
-                        </Link>
-                    </div> :
-                    <></>
-                }
-                <img src={`${img}`} alt={`${name}`} className={s.img_detail} />
-                <h1 className={s.header_detail} >
-                    <strong>{name}</strong>
-                </h1>
-                <div className={s.cardContent_detail} >
-                    <p className={s.card_text_detail} >
-                        <b>{`${parseFloat(String(rating)).toFixed(2)}`}</b>
-                    </p>
-                </div>
-                <div className={s.cardContent_detail} >
-                    <p className={s.card_text_detail} >
-                        <b>{`${released}`}</b>
-                    </p>
-                </div>
-                <div className={s.cardContent_detail} >
-                    <p className={s.card_text_detail} >
-                        <b>Generos:{genres?.reduce((text, genre) => text ? 
-                            `${text} - ${genre}` : 
-                            `${genre}`, "")}</b>
-                    </p>
-                </div>
-                <div className={s.cardContent_detail} >
-                    <p className={s.card_text_detail} >
-                        <b>Plataformas:{platforms?.reduce((text, platform) => text ? 
-                            `${text} - ${platform}` : 
-                            `${platform}`, "")}</b>
-                    </p>
-                </div>
-                <div className={s.cardContent_detail} >
-                    <p className={s.card_text_detail} >{`${description}`}</p>
-                </div>
-                {
-                    !game.update ?
+            {
+                GAME ?
+                <div className={s.card_detail} >
+                    {
+                        createdInDb && !game.update ?
+                        <div className={s.buttons_detail} >
+                            <NavLink className={s.link_detail} to={`/home/game/edit/${id}`}>
+                                <img className={s.image_button} src={editImage} alt={`${name}`} />
+                            </NavLink>
+                            <input onClick={() => handleDelete()} className={s.image_button} type="image" src={deleteImage} alt="edit" />
+                        </div> :
+                        <></>
+                    }
+                    <img src={`${img}`} alt={`${name}`} className={s.img_detail} />
+                    <div className={s.rating_released} >
+                        <div className={`${s.cardContent_detail} ${s.card_rating_detail}`} >
+                            <p className={`${s.card_text_detail} ${s.rating_number_detail}`} >
+                                <b>{`${parseFloat(String(rating)).toFixed(2)}`}</b>
+                            </p>
+                            <div className={s.stars} >
+                                <span 
+                                    className={Math.round(rating) >= 1 ? s.star_rating_detail : ""} 
+                                >★</span>
+                                <span 
+                                    className={Math.round(rating) >= 2 ? s.star_rating_detail : ""} 
+                                >★</span>
+                                <span 
+                                    className={Math.round(rating) >= 3 ? s.star_rating_detail : ""} 
+                                >★</span>
+                                <span 
+                                    className={Math.round(rating) >= 4 ? s.star_rating_detail : ""} 
+                                >★</span>
+                                <span 
+                                    className={Math.round(rating) === 5 ? s.star_rating_detail : ""} 
+                                >★</span>
+                            </div>
+                        </div>
+                        <div className={s.cardContent_detail} >
+                            <p className={s.card_text_detail} >
+                                <b>{`${released}`}</b>
+                            </p>
+                        </div>
+                    </div>
+                    <h1 className={s.header_detail} >
+                        <strong>{name}</strong>
+                    </h1>
+                    <div className={`${s.cardContent_detail} ${s.card_description}`} >
+                        <p className={s.card_text_detail} >{`${description}`}</p>
+                    </div>
                     <div className={s.cardContent_detail} >
-                        <NavLink to="/home">
-                            <button>
-                                <b>Volver</b>
-                            </button>
-                        </NavLink>
-                    </div> :
-                    <></>
-                }
-            </div>
+                        <p className={s.card_text_detail} >
+                            <b>Genres:</b>{"   " + genres?.reduce((text, genre) => text ? 
+                                `${text} - ${genre}` : 
+                                `${genre}`, "")}
+                        </p>
+                    </div>
+                    <div className={`${s.cardContent_detail} ${s.text_end}`} >
+                        <p className={s.card_text_detail} >
+                            <b>Platforms:</b>{"   " + platforms?.reduce((text, platform) => text ? 
+                                `${text} - ${platform}` : 
+                                `${platform}`, "")}
+                        </p>
+                    </div>
+                    {
+                        /* !game.update ?
+                        <div className={s.cardContent_detail} >
+                            <NavLink to="/home">
+                                <button>
+                                    <b>Volver</b>
+                                </button>
+                            </NavLink>
+                        </div> :
+                        <></> */
+                    }
+                </div> :
+                <Loading />
+            }
         </div>
     );
 };

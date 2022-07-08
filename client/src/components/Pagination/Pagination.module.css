@@ -5,3 +5,28 @@
     z-index: auto;
     margin: 2rem;
 }
+
+.button_pagination {
+    background-color: rgba(31, 31, 31, 0.904);
+    margin: 0.2rem;
+    padding: 0;
+    height: auto;
+    width: 3.5vw;
+    color: rgb(201, 201, 201);
+    border-color: rgb(87, 2, 87);
+    border-style: solid;
+    border-radius: 1rem;
+    border-width: 0.2rem;
+    font-weight: 900;
+    font-size: large;
+    cursor: pointer;
+}
+
+.button_pagination:hover {
+    background-color: rgb(87, 2, 87);
+    transition: 200ms;    
+}
+
+.button_currentPage {
+    background-color: rgb(87, 2, 87);    
+}

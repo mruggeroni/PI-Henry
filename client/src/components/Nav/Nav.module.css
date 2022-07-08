@@ -3,15 +3,23 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: rgb(31, 39, 50);
-    box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
+    background-color: rgb(46, 16, 46);
+    height: 5%;
     padding: 0.5rem 2rem;
     margin: 0;
     z-index: 1;
+}
+
+.icon_nav {
+    width: 3%;
+    height: auto;
+    margin: 0;
+    cursor: pointer;
 }
 
 .link_nav {
     text-decoration: none;
     color: whitesmoke;
     cursor: pointer;
+    font-weight: 600;
 }

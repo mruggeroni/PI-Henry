@@ -19,3 +19,17 @@
     height: 100vh;
     z-index: 1;
 }
+
+.description_about {
+    margin-left: 5rem;
+    margin-right: 5rem;
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+.image_about {
+    height: auto;
+    width: 15vw;
+    border-radius: 1rem;
+    margin: 0 auto auto auto;
+}

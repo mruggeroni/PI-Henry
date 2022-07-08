@@ -6,6 +6,7 @@ import { getGames,  getGamesFound,   getGenres/* , getPlatforms */, filtersAndSo
 import FiltersAndSorts from "../FiltersAndSorts/FiltersAndSorts";
 import GameCard from "../GameCard/GameCard";
 import Pagination from "../Pagination/Pagination";
+import Loading from "../Loading/Loading";
 import s from './Home.module.css';
 import video from '../../img/Black-Loop.mp4';
 
@@ -49,15 +50,15 @@ export default function Home() {
         G_F = useRef(""),
         S = useRef(""),
         vid1 = useRef(),
-        vid2 = useRef(),
-        vid3 = useRef(),
-        vid4 = useRef();
+        vid2 = useRef();
+        // vid3 = useRef(),
+        // vid4 = useRef();
     
     useEffect(() => {
         vid1.current.play();
         vid2.current.play();
-        vid3.current.play();
-        vid4.current.play();
+        // vid3.current.play();
+        // vid4.current.play();
     });
 
     function handleSubmitSearch(e) {
@@ -105,7 +106,7 @@ export default function Home() {
                 muted 
                 loop 
             ></video>
-            <video 
+            {/* <video 
                 key="video3" 
                 id="video3" 
                 src={video} 
@@ -126,7 +127,7 @@ export default function Home() {
                 autoplay 
                 muted 
                 loop 
-            ></video>
+            ></video> */}
             <div className={s.content_home} >
                 <FiltersAndSorts 
                     handleFilterSortChanges={handleFilterSortChanges} 
@@ -139,34 +140,45 @@ export default function Home() {
                     handleLeaveSearch={handleLeaveSearch}
                     name={name}
                 />
-                {currentGames ? <Pagination 
-                    numberOfAllGames={GAMES?.length} 
-                    gamesPerPage={gamesPerPage} 
-                    paginado={paginado}
-                    currentPage={currentPage} 
-                /> : ""}
-                <h1>VideoGames App</h1>
+                {
+                    currentGames ? 
+                    <Pagination 
+                        numberOfAllGames={GAMES?.length} 
+                        gamesPerPage={gamesPerPage} 
+                        paginado={paginado}
+                        currentPage={currentPage} 
+                    /> : 
+                    <Loading />
+                }
                 <div className={s.cards} >
-                    {currentGames?.map(({ id, name, img, rating, genres, createdInDb}) => {
-                        return (
-                            <GameCard 
-                                key={id} 
-                                id={id} 
-                                name={name} 
-                                img={img} 
-                                rating={rating} 
-                                genres={genres} 
-                                createdInDb={createdInDb}
-                            />
-                        )
-                    })}
+                    {
+                        currentGames ? 
+                        currentGames.map(({ id, name, img, rating, genres, createdInDb}) => {
+                            return (
+                                <GameCard 
+                                    key={id} 
+                                    id={id} 
+                                    name={name} 
+                                    img={img} 
+                                    rating={rating} 
+                                    genres={genres} 
+                                    createdInDb={createdInDb}
+                                />
+                            )
+                        }) : 
+                        <Loading />
+                    }
                 </div>
-                {currentGames ? <Pagination 
-                    numberOfAllGames={GAMES?.length} 
-                    gamesPerPage={gamesPerPage} 
-                    paginado={paginado}
-                    currentPage={currentPage} 
-                /> : ""}
+                {
+                    currentGames ? 
+                    <Pagination 
+                        numberOfAllGames={GAMES?.length} 
+                        gamesPerPage={gamesPerPage} 
+                        paginado={paginado}
+                        currentPage={currentPage} 
+                    /> : 
+                    <Loading />
+                }
             </div>
         </div>
     );

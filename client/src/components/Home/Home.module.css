@@ -1,5 +1,4 @@
 .home {
-    background-color: black;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -31,7 +30,7 @@
     width: 100%;
 }
 
-.vid3_home {
+/* .vid3_home {
     margin-top: 200vh;
     width: 100%;
 }
@@ -39,4 +38,4 @@
 .vid4_home {
     margin-top: 300vh;
     width: 100%;
-}
+} */

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { deleteGame } from '../../redux/actions';
 import s from './GameCard.module.css';
-// import editImage from '../../img/****MODIFICAR****';
+import deleteImage from '../../img/delete.png';
 
 
 export default function GameCard(props) {
@@ -20,9 +20,7 @@ export default function GameCard(props) {
             {
                 props.createdInDb ?
                 <div>
-                    <button onClick={() => handleDelete()} >
-                        <b>x</b>
-                    </button>
+                    <input onClick={() => handleDelete()} className={s.button_card} type="image" src={deleteImage} alt="edit" />
                     {/* <Link to={`/home/game/edit/${props.id}`}>
                         <img src={`${"editImage"}`} alt={`${props.name}`} />
                     </Link> */}

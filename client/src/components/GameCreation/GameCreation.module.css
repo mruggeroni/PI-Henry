@@ -1,33 +1,88 @@
-.background_creation {
-    background-color: rgb(44, 13, 83);
-    padding: 5% 2.5% 2.5% 2.5%;
-}
-
 .content_creation {
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+}
+
+.detail_creation {
+    width: 38vw;
+    height: auto;
+    margin: auto;
 }
 
 .card_creation {
-    width: 50vw;
+    width: 40vw;
     height: auto;
     justify-items: center;
     justify-content: center;
-    margin: 1rem;
+    margin: 0;
     padding: 24px;
-    border-radius: 0.5rem;
-    background-color: rgb(29, 29, 29);
-    box-shadow: 4px 4px 12px rgb(241 250 238 / 13%);
-    transition-duration: .35s;
-    margin: auto;
-    color: rgb(231, 231, 231);
+    background-color: rgba(31, 31, 31, 0.753);
+    color:  rgb(201, 201, 201);
 }
 
 .img_creation {
     display: block;
-    width: 30%;
+    width: 20%;
     height: auto;
     object-fit: cover;
     border-radius: 0.4rem;
     margin: auto;
 }
+
+.options_buttons {
+    background-color: rgb(64, 25, 100);
+    margin: 0.3rem;
+    padding: 0.5rem;
+    color:  rgb(201, 201, 201);
+    font-weight: 400;
+    border-radius: 0.75rem;
+    border-style: hidden;
+    cursor: pointer;
+}
+
+.options_buttons:hover {
+    background-color: rgb(150, 0, 0);
+    transition: 300ms;
+}
+
+.submit_cancel {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 1rem;
+}
+
+.buttons_creation {
+    height: 10vh;
+    width: auto;
+    padding: 0.25rem;
+    border-radius: 100%;
+    border-style: solid;
+    border-width: 0.3rem;
+    background-color: rgb(44, 44, 44);
+}
+
+.errors {
+    color: red;
+}
+
+.submit_creation {
+    border-color: rgb(21, 199, 15);
+}
+
+.cancel_creation {
+    border-color: rgb(235, 14, 14);
+}
+
+.buttons_creation:hover {
+    background-color: rgb(21, 199, 15);
+    transition: 500ms;
+}
+
+.cancel_creation:hover {
+    background-color: rgb(235, 14, 14);
+    transition: 500ms;
+}
+

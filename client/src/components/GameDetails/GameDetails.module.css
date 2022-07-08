@@ -1,44 +1,106 @@
 .background_detail {
-    background-color: rgb(44, 13, 83);
+    margin: 0;
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+}
+
+.buttons_detail {
+    position: absolute;
+    margin-left: 1rem;
+}
+
+.image_button {
+    background-color: rgba(0, 0, 0, 0);
+    width: 2rem;
+    height: 2rem;
+    margin-top: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .card_detail {
-    width: 50vw;
+    width: 60vmax;
     height: auto;
-    justify-items: center;
-    justify-content: center;
-    margin: 1rem;
-    padding: 24px;
-    border-radius: 0.5rem;
-    background-color: rgb(29, 29, 29);
-    box-shadow: 4px 4px 12px rgb(241 250 238 / 13%);
-    transition-duration: .35s;
-    margin: auto;
-    color: rgb(231, 231, 231);
+    margin: 2rem;
+    padding: 0px;
+    border-radius: 4rem;
+    background-color: rgba(31, 31, 31, 0.904);
+    color:  rgb(201, 201, 201);
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+.link_detail {
+    text-decoration: none;
+    color: rgb(201, 201, 201);
+    font-family: "Poppins","Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;
+}
+
+.img_detail {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0.4rem;
+    margin-bottom: 1rem;
 }
 
 .header_detail {
-    font-weight: 500;
-    font-size: 1.5rem;
-    margin-bottom: 0.4rem;
+    font-weight: 1000;
+    font-size: 2.5rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    margin-bottom: 1rem;
+}
+
+.cardContent_detail {
+    padding: 0.5rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+.rating_released {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.text_end {
+    margin-bottom: 3rem;
 }
 
 .card_text_detail {
     font-size: 1rem;
     letter-spacing: .1rem;
     line-height: 1.2;
-    margin-bottom: 0.8rem;
 }
 
-.cardContent_detail {
-    padding: 0.4rem;
+.card_description {
+    text-align: justify;
 }
 
-.img_detail {
-    display: block;
-    width: 90%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 0.4rem;
-    margin: auto;
+.rating_number_detail {
+    background-color: rgba(245, 245, 245, 0.171);
+    width: 4vw;
+    height: 4vh;
+    border-radius: 2rem;
+    padding-top: 0.2rem;
+}
+
+.stars {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.card_rating_detail {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.star_rating_detail {
+    color: rgb(255, 217, 0);
 }
