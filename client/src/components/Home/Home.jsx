@@ -8,10 +8,12 @@ import GameCard from "../GameCard/GameCard";
 import Pagination from "../Pagination/Pagination";
 import Loading from "../Loading/Loading";
 import s from './Home.module.css';
-import video from '../../img/Black-Loop.mp4';
+// import video from '../../img/Black-Loop.mp4';
 
 
 export default function Home() {
+    const video = "https://res.cloudinary.com/dkf1okbsr/video/upload/v1663212309/PI/Black-Loop_r4166h.mp4";
+    
     const dispatch = useDispatch();
 
     useEffect(() => {

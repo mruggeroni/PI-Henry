@@ -4,12 +4,15 @@ import { getGameDetail } from '../../redux/actions';
 import { NavLink, useParams, useHistory } from 'react-router-dom';
 import { deleteGame } from '../../redux/actions';
 import Loading from "../Loading/Loading";
-import editImage from '../../img/edit.png';
-import deleteImage from '../../img/delete.png';
 import s from './GameDetails.module.css';
+// import editImage from '../../img/edit.png';
+// import deleteImage from '../../img/delete.png';
 
 
 export default function GameDetails(/* { match } */game) {
+    const editImage = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212305/PI/edit_qt8bpv.png";
+    const deleteImage = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212306/PI/delete_qmp3hl.png";
+    
     const dispatch = useDispatch();
     const history = useHistory();
     const params = useParams(); /* match.params; */

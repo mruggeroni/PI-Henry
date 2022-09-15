@@ -3,10 +3,12 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { deleteGame } from '../../redux/actions';
 import s from './GameCard.module.css';
-import deleteImage from '../../img/delete.png';
+// import deleteImage from '../../img/delete.png';
 
 
 export default function GameCard(props) {
+    const deleteImage = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212306/PI/delete_qmp3hl.png";
+    
     const dispatch = useDispatch();
 
     function handleDelete() {

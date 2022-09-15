@@ -4,9 +4,8 @@ import { NavLink, Prompt, useParams, useHistory } from "react-router-dom";
 import { getGameDetail, getGames, getGenres, getPlatforms, postGame, putGame } from "../../redux/actions";
 import GameDetails from '../GameDetails/GameDetails';
 import s from './GameCreation.module.css';
-import submit from '../../img/joystick.png';
-import cancel from '../../img/joystick v2.png';
-
+// import submit from '../../img/joystick.png';
+// import cancel from '../../img/joystick v2.png';
 
 
 function validation(input, GAMES /* ,errors ,e */) {
@@ -66,11 +65,14 @@ function validation(input, GAMES /* ,errors ,e */) {
 
 
 export default function GameCreation() {
+    const submit = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212305/PI/joystick_sgjsdm.png";
+    const cancel = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212305/PI/joystick_v2_rw98tp.png";
+    const imagenDefault = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212307/PI/videogame-default_zrt3xm.jpg";
+
     const dispatch = useDispatch();
     const params = useParams();
     const history = useHistory();
     const id = params.id;
-    const imagenDefault = "https://media.istockphoto.com/photos/neon-sign-on-a-brick-wall-glowing-gamepad-icon-abstract-background-picture-id1306435820?b=1&k=20&m=1306435820&s=170667a&w=0&h=2w7KFk2tBOZ3lvKWRXC0DzHoW2l2MtMBGpGOhRz152E=";
 
     useEffect(() => {
         dispatch(getGenres());
@@ -188,7 +190,7 @@ export default function GameCreation() {
                 />
             </div>
             <div className={s.card_creation} >
-                <form>
+                <form /* onSubmit={(e) => handleSubmit(e)} */ >
                     <div>
                         <label htmlFor="name">Name</label>
                         <input 
@@ -404,7 +406,7 @@ export default function GameCreation() {
                             title="Submit"
                             type="image" 
                             className={`${s.buttons_creation} ${s.submit_creation}`}
-                            onSubmit={(e) => handleSubmit(e)}
+                            onClick={(e) => handleSubmit(e)}
                             disabled={Object.keys(errors).length || !input.name || !input.description || !input.released || !input.rating || !input.genres.length || !input.platforms.length} 
                             src={submit} 
                             alt={id ? "update" : "Create"} 
@@ -428,12 +430,12 @@ export default function GameCreation() {
                         >
                             <b>{id ? "update" : "Create"}</b>
                         </button>
-                            <button 
-                                id="cancel" 
-                                name="cancel" 
-                            >
-                                <b>Cancel</b>
-                            </button> */}
+                        <button 
+                            id="cancel" 
+                            name="cancel" 
+                        >
+                            <b>Cancel</b>
+                        </button> */}
                     </div>
                 </form>
                 <Prompt 

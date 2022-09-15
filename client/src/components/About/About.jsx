@@ -1,10 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import s from './About.module.css';
-import video from '../../img/Black-Loop.mp4';
-import image from '../../img/page_icon.jpg';
+// import video from '../../img/Black-Loop.mp4';
+// import image from '../../img/page_icon.jpg';
 
 
 export default function About() {
+    // const video = "https://cdn.pixabay.com/vimeo/248644905/Black%20-%2013495.mp4?rendition=source&expiry=1657605315&hash=b6bf7bc6225dc12d5e636bd0e6ee1a03775cb077";
+    const video = "https://res.cloudinary.com/dkf1okbsr/video/upload/v1663212309/PI/Black-Loop_r4166h.mp4";
+    const image = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212306/PI/page_icon_ocrogz.jpg";
+    
     const vid = useRef();
     useEffect(() => {
         vid.current.play();
