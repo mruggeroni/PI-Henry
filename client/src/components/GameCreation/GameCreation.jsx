@@ -8,7 +8,7 @@ import s from './GameCreation.module.css';
 // import cancel from '../../img/joystick v2.png';
 
 
-function validation(input, GAMES /* ,errors ,e */) {
+function validation(input, GAMES, oldName /* ,errors ,e */) {
     const ERRORS = {};  // se puede inicializar en {...errors}, borrar el error viejo para ese e.target.name, y acto seguido envolver los if por tipo de input
 // name validate
     if (!input.name) {
@@ -17,7 +17,7 @@ function validation(input, GAMES /* ,errors ,e */) {
     } else if (input.name.length < 3 || 25 < input.name.length) {
         ERRORS.name = 'Name must be 3 to 25 characters length.';
 
-    } else if (GAMES?.findIndex(game => input.name === game.name) >= 0) {
+    } else if (GAMES?.findIndex(game => (input.name === game.name) && (input.name !== oldName)) >= 0) {
         ERRORS.name = 'Name already exists. This must be unique.';
     };
 
@@ -108,7 +108,7 @@ export default function GameCreation() {
             [e.target.name]: input[e.target.name].filter(element => element !== e.target.id),
         };
         setInput(newInput);
-        setErrors(validation(newInput, GAMES));
+        setErrors(validation(newInput, GAMES, GAME_DETAIL.name));
     };
     const handleChange = (e) => {
         e.preventDefault();
@@ -149,11 +149,11 @@ export default function GameCreation() {
                 break;
         }
         setInput(newInput);  // se iniciliza una varible "newInput" con el input nuevo y luego se realiza el setInput(newInput). El setInput(input) al llevar tiempo, puede renderizar el error viejo al entrar antes a la funcion validadora.
-        setErrors(validation(newInput, GAMES));
+        setErrors(validation(newInput, GAMES, GAME_DETAIL.name));
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        setErrors(validation(input, GAMES));
+        setErrors(validation(input, GAMES, GAME_DETAIL.name));
         id ? dispatch(putGame({...input, id})) : dispatch(postGame(input));
         setInput({
             name: id ? GAME_DETAIL.name : "", 
