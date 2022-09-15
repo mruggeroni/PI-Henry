@@ -68,6 +68,10 @@
     color: red;
 }
 
+.image_error {
+    color: orange;
+}
+
 .submit_creation {
     border-color: rgb(21, 199, 15);
 }

@@ -12,13 +12,13 @@ function validation(input, GAMES /* ,errors ,e */) {
     const ERRORS = {};  // se puede inicializar en {...errors}, borrar el error viejo para ese e.target.name, y acto seguido envolver los if por tipo de input
 // name validate
     if (!input.name) {
-        ERRORS.name = 'The name is required.';
+        ERRORS.name = 'Name is required.';
 
     } else if (input.name.length < 3 || 25 < input.name.length) {
-        ERRORS.name = 'The name must be 3 to 25 characters length.';
+        ERRORS.name = 'Name must be 3 to 25 characters length.';
 
     } else if (GAMES?.findIndex(game => input.name === game.name) >= 0) {
-        ERRORS.name = 'The name already exists. This must be unique.';
+        ERRORS.name = 'Name already exists. This must be unique.';
     };
 
 // image validate
@@ -28,26 +28,23 @@ function validation(input, GAMES /* ,errors ,e */) {
 
 // description validate
     if (!input.description) {
-        ERRORS.description = 'The description is required.';
+        ERRORS.description = 'Description is required.';
 
     } else if (input.description.length < 10 || 500 < input.description.length) {
-        ERRORS.description = 'The description must be 10 to 500 characters length.';
+        ERRORS.description = 'Description must be 10 to 500 characters length.';
     };
 
 // released validate
     if (!input.released) {
-        ERRORS.released = 'The released is required.';
+        ERRORS.released = 'Released is required.';
     }; 
 
 // rating validate
     if (!input.rating) {
-        ERRORS.rating = 'The rating is required.';
-
-    } else if (typeof input.rating === "number") {
-        ERRORS.rating = 'The rating must be a float number.';
+        ERRORS.rating = 'Rating is required.';
 
     } else if (input.rating < 0 || 5 < input.rating) {
-        ERRORS.rating = 'The rating value must be between 0 and 5 inclusive.';
+        ERRORS.rating = 'Rating value must be between 0 and 5 inclusive.';
     };
 
 // genres validate
@@ -186,7 +183,7 @@ export default function GameCreation() {
                     genres={input.genres}
                     platforms={input.platforms}
                     createdInDb={true}
-                    update={true}
+                    form={true}
                 />
             </div>
             <div className={s.card_creation} >
@@ -229,14 +226,20 @@ export default function GameCreation() {
                             className={s.img_creation}
                             src={input.img} 
                             alt="preview_image" 
-                            onError={(e) => setErrors({
-                                ...errors,
-                                img: 'The image is not rendered.',
-                            }) /* tambien se puede pasar un e.target.id al validate, creando alli otro caso para este error*/}
+                            onError={(e) => {
+                                setErrors({
+                                    ...errors,
+                                    img: 'Image is not rendering.',
+                                });
+                                setInput({
+                                    ...input,
+                                    img: imagenDefault,
+                                });
+                            } /* tambien se puede pasar un e.target.id al validate, creando alli otro caso para este error*/}
                         />
                         {
                             errors.img ?
-                            <p className={s.errors} >{errors.img}</p> :
+                            <p className={s.image_error} >{errors.img}</p> :
                             <></>
                         }
                     </div>
@@ -407,7 +410,7 @@ export default function GameCreation() {
                             type="image" 
                             className={`${s.buttons_creation} ${s.submit_creation}`}
                             onClick={(e) => handleSubmit(e)}
-                            disabled={Object.keys(errors).length || !input.name || !input.description || !input.released || !input.rating || !input.genres.length || !input.platforms.length} 
+                            disabled={Object.keys(errors)?.filter(e => e !== "img").length || (Object.keys(input)?.length !== 7 || !input.genres?.length || !input.platforms?.length)} 
                             src={submit} 
                             alt={id ? "update" : "Create"} 
                         />

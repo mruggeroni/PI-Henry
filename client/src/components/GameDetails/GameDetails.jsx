@@ -29,7 +29,7 @@ export default function GameDetails(/* { match } */game) {
 
     const GAME = useSelector(state => state.gameDetail)
 
-    const { name, img, description, rating, released, genres, platforms, createdInDb } = !game.update ? GAME : game;
+    const { name, img, description, rating, released, genres, platforms, createdInDb } = !game.form ? GAME : game;
 
     function handleDelete() {
         if (window.confirm(`Do you want delete "${name}"?`)) {
@@ -41,10 +41,10 @@ export default function GameDetails(/* { match } */game) {
     return (
         <div className={s.background_detail} >
             {
-                GAME ?
+                (name || img || description || rating || released || genres || platforms || createdInDb) ?
                 <div className={s.card_detail} >
                     {
-                        createdInDb && !game.update ?
+                        createdInDb && !game.form ?
                         <div className={s.buttons_detail} >
                             <NavLink className={s.link_detail} to={`/home/game/edit/${id}`}>
                                 <img className={s.image_button} src={editImage} alt={`${name}`} />
@@ -104,7 +104,7 @@ export default function GameDetails(/* { match } */game) {
                         </p>
                     </div>
                     {
-                        /* !game.update ?
+                        !game.form ?
                         <div className={s.cardContent_detail} >
                             <NavLink to="/home">
                                 <button>
@@ -112,7 +112,7 @@ export default function GameDetails(/* { match } */game) {
                                 </button>
                             </NavLink>
                         </div> :
-                        <></> */
+                        <></>
                     }
                 </div> :
                 <Loading />

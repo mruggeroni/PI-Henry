@@ -12,7 +12,7 @@ export default function Nav() {
             <img className={s.icon_nav} src={icon} alt="icon" />
             <NavLink className={s.link_nav} to="/home">Home</NavLink>
             <NavLink className={s.link_nav} to="/home/about">About</NavLink>
-            <NavLink className={s.link_nav} to="/home/creategame">Crear Videojuego</NavLink>
+            <NavLink className={s.link_nav} to="/home/creategame">Create Game</NavLink>
         </div>
     );
 };

@@ -53,14 +53,12 @@ export default function Home() {
         S = useRef(""),
         vid1 = useRef(),
         vid2 = useRef();
-        // vid3 = useRef(),
-        // vid4 = useRef();
-    
+
     useEffect(() => {
-        vid1.current.play();
-        vid2.current.play();
-        // vid3.current.play();
-        // vid4.current.play();
+        if (currentGames.length) {
+            vid1.current.play();
+            vid2.current.play();
+        };
     });
 
     function handleSubmitSearch(e) {
@@ -86,50 +84,34 @@ export default function Home() {
 
     return (
         <div className={s.home} >
-            <video 
-                key="video1" 
-                id="video1" 
-                src={video} 
-                type="video/mp4" 
-                ref={vid1} 
-                className={s.vid1_home} 
-                autoplay 
-                muted 
-                loop 
-            ></video>
-            <video 
-                key="video2" 
-                id="video2" 
-                src={video} 
-                type="video/mp4" 
-                ref={vid2} 
-                className={s.vid2_home} 
-                autoplay 
-                muted 
-                loop 
-            ></video>
-            {/* <video 
-                key="video3" 
-                id="video3" 
-                src={video} 
-                type="video/mp4" 
-                ref={vid3} 
-                className={s.vid3_home} 
-                autoplay 
-                muted 
-                loop 
-            ></video>
-            <video 
-                key="video4" 
-                id="video4" 
-                src={video} 
-                type="video/mp4" 
-                ref={vid4} 
-                className={s.vid4_home} 
-                autoplay 
-                muted 
-                loop 
-            ></video> */}
+            {
+                currentGames.length ? 
+                <>
+                    <video 
+                        key="video1" 
+                        id="video1" 
+                        src={video} 
+                        type="video/mp4" 
+                        ref={vid1} 
+                        className={s.vid1_home} 
+                        autoplay 
+                        muted 
+                        loop 
+                    ></video>
+                    <video 
+                        key="video2" 
+                        id="video2" 
+                        src={video} 
+                        type="video/mp4" 
+                        ref={vid2} 
+                        className={s.vid2_home} 
+                        autoplay 
+                        muted 
+                        loop 
+                    ></video>
+                </> :
+                <Loading />
+            }
             <div className={s.content_home} >
                 <FiltersAndSorts 
                     handleFilterSortChanges={handleFilterSortChanges} 
@@ -143,18 +125,18 @@ export default function Home() {
                     name={name}
                 />
                 {
-                    currentGames ? 
+                    currentGames.length ? 
                     <Pagination 
                         numberOfAllGames={GAMES?.length} 
                         gamesPerPage={gamesPerPage} 
                         paginado={paginado}
                         currentPage={currentPage} 
                     /> : 
-                    <Loading />
+                    <></>
                 }
                 <div className={s.cards} >
                     {
-                        currentGames ? 
+                        currentGames.length ? 
                         currentGames.map(({ id, name, img, rating, genres, createdInDb}) => {
                             return (
                                 <GameCard 
@@ -168,18 +150,18 @@ export default function Home() {
                                 />
                             )
                         }) : 
-                        <Loading />
+                        <></>
                     }
                 </div>
                 {
-                    currentGames ? 
+                    currentGames.length ? 
                     <Pagination 
                         numberOfAllGames={GAMES?.length} 
                         gamesPerPage={gamesPerPage} 
                         paginado={paginado}
                         currentPage={currentPage} 
                     /> : 
-                    <Loading />
+                    <></>
                 }
             </div>
         </div>
