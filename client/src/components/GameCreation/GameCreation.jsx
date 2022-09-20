@@ -88,15 +88,31 @@ export default function GameCreation() {
     const GAME_DETAIL = useSelector(state => state.gameDetail);
     const GAMES = useSelector(state => state.games);
 
+    const { name, img, description, rating, released, genres, platforms } = GAME_DETAIL;
+
     const [input, setInput] = useState({
-        name: id ? GAME_DETAIL?.name : "", 
-        img: id ? GAME_DETAIL?.img : imagenDefault, 
-        description: id ? GAME_DETAIL?.description : "", 
-        rating: id ? GAME_DETAIL?.rating : 0, 
-        released: id ? GAME_DETAIL?.released : "",
-        genres: id ? GAME_DETAIL?.genres : [],
-        platforms: id ? GAME_DETAIL?.platforms : [],
+        name: id ? name : "", 
+        img: id && img ? img : imagenDefault, 
+        description: id ? description : "", 
+        rating: id ? rating : 0, 
+        released: id ? released : "",
+        genres: id && genres ? genres : [],
+        platforms: id && platforms ? platforms : [],
     });
+
+    useEffect(() => {
+        if (id) {
+            setInput({
+                name: id ? name : "", 
+                img: id && img ? img : imagenDefault, 
+                description: id ? description : "", 
+                rating: id ? rating : 0, 
+                released: id ? released : "",
+                genres: id && genres ? genres : [],
+                platforms: id && platforms ? platforms : [],
+            });
+        };
+    }, [id, name, img, description, rating, released, genres, platforms]);
 
     const [errors, setErrors] = useState({});
 
