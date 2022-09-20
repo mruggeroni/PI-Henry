@@ -84,34 +84,6 @@ export default function Home() {
 
     return (
         <div className={s.home} >
-            {
-                currentGames.length ? 
-                <>
-                    <video 
-                        key="video1" 
-                        id="video1" 
-                        src={video} 
-                        type="video/mp4" 
-                        ref={vid1} 
-                        className={s.vid1_home} 
-                        autoplay 
-                        muted 
-                        loop 
-                    ></video>
-                    <video 
-                        key="video2" 
-                        id="video2" 
-                        src={video} 
-                        type="video/mp4" 
-                        ref={vid2} 
-                        className={s.vid2_home} 
-                        autoplay 
-                        muted 
-                        loop 
-                    ></video>
-                </> :
-                <Loading />
-            }
             <div className={s.content_home} >
                 <FiltersAndSorts 
                     handleFilterSortChanges={handleFilterSortChanges} 
@@ -124,46 +96,66 @@ export default function Home() {
                     handleLeaveSearch={handleLeaveSearch}
                     name={name}
                 />
-                {
-                    currentGames.length ? 
-                    <Pagination 
-                        numberOfAllGames={GAMES?.length} 
-                        gamesPerPage={gamesPerPage} 
-                        paginado={paginado}
-                        currentPage={currentPage} 
-                    /> : 
-                    <></>
-                }
-                <div className={s.cards} >
-                    {
-                        currentGames.length ? 
-                        currentGames.map(({ id, name, img, rating, genres, createdInDb}) => {
-                            return (
-                                <GameCard 
-                                    key={id} 
-                                    id={id} 
-                                    name={name} 
-                                    img={img} 
-                                    rating={rating} 
-                                    genres={genres} 
-                                    createdInDb={createdInDb}
-                                />
-                            )
-                        }) : 
-                        <></>
-                    }
-                </div>
-                {
-                    currentGames.length ? 
-                    <Pagination 
-                        numberOfAllGames={GAMES?.length} 
-                        gamesPerPage={gamesPerPage} 
-                        paginado={paginado}
-                        currentPage={currentPage} 
-                    /> : 
-                    <></>
-                }
             </div>
+            <video 
+                key="video1" 
+                id="video1" 
+                src={video} 
+                type="video/mp4" 
+                ref={vid1} 
+                className={s.vid1_home} 
+                autoplay 
+                muted 
+                loop 
+            ></video>
+            {
+                currentGames.length ? 
+                <>
+                    <video 
+                        key="video2" 
+                        id="video2" 
+                        src={video} 
+                        type="video/mp4" 
+                        ref={vid2} 
+                        className={s.vid2_home} 
+                        autoplay 
+                        muted 
+                        loop 
+                    ></video>
+                    <div className={s.content_home} >
+                        <Pagination 
+                            numberOfAllGames={GAMES?.length} 
+                            gamesPerPage={gamesPerPage} 
+                            paginado={paginado}
+                            currentPage={currentPage} 
+                        />
+                        <div className={s.cards} >
+                            {
+                                currentGames.map(({ id, name, img, rating, genres, createdInDb}) => {
+                                    return (
+                                        <GameCard 
+                                            key={id} 
+                                            id={id} 
+                                            name={name} 
+                                            img={img} 
+                                            rating={rating} 
+                                            genres={genres} 
+                                            createdInDb={createdInDb}
+                                        />
+                                    )
+                                })
+                            }
+                        </div>
+                        <Pagination 
+                            numberOfAllGames={GAMES?.length} 
+                            gamesPerPage={gamesPerPage} 
+                            paginado={paginado}
+                            currentPage={currentPage} 
+                        />
+                    </div>
+                </> :
+                <Loading />
+            }
         </div>
     );
 };
