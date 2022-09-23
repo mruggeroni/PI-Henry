@@ -3,6 +3,7 @@ const AXIOS = require('axios');
 const { Videogame, Genre, Platform } = require('../db');
 const { Op } = require('sequelize');
 const { API_KEY } = process.env;
+require('dotenv').config({ path: `.env` });
 
 
 const router = Router();

@@ -1,7 +1,9 @@
-require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config({ path: `.env` }); /* .${process.env.NODE_ENV} */
+
+
 const {
   DB_USER, 
   DB_PASSWORD, 
@@ -31,6 +33,7 @@ let sequelize = NODE_ENV === 'production'
       keepAlive: true,
     },
     ssl: true,
+    logging: false,
   })
   : new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
     logging: false, // set to console.log to see the raw SQL queries

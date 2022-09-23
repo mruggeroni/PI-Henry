@@ -1,5 +1,7 @@
-import AXIOS from 'axios'
+import AXIOS from 'axios';
 
+
+const URL = process.env.REACT_APP_ONLINE_SERVER || `http://localhost:3001`;
 
 export const GET_GAMES = "GET_GAMES",
   GET_GAMES_FOUND = "GET_GAMES_FOUND",
@@ -15,7 +17,7 @@ export const GET_GAMES = "GET_GAMES",
 export function getGames() {
   return async function (dispatch) {
     try {
-      const JSON = await AXIOS.get('http://localhost:3001/videogames');
+      const JSON = await AXIOS.get(`${URL}/videogames`);
       const GAMES = JSON.data;
       return dispatch({
         type: GET_GAMES,
@@ -30,7 +32,7 @@ export function getGames() {
 export function getGamesFound(name) {
   return async function (dispatch) {
     try {
-      const JSON = await AXIOS.get(`http://localhost:3001/videogames?name=${name}`);
+      const JSON = await AXIOS.get(`${URL}/videogames?name=${name}`);
       const GAMES = JSON.data;
       return dispatch({
         type: GET_GAMES_FOUND,
@@ -45,7 +47,7 @@ export function getGamesFound(name) {
 export function getGameDetail(id) {
   return async function (dispatch) {
     try {
-      const JSON = id ? await AXIOS.get(`http://localhost:3001/videogame/${id}`) : { data: {} };
+      const JSON = id ? await AXIOS.get(`${URL}/videogame/${id}`) : { data: {} };
       const GAME = JSON.data;
       return dispatch({
         type: GET_GAME_DETAIL,
@@ -60,7 +62,7 @@ export function getGameDetail(id) {
 export function postGame(game) {
   return async function (dispatch) {
     try {
-      const MESSAGE = await AXIOS.post('http://localhost:3001/videogame', game);
+      const MESSAGE = await AXIOS.post(`${URL}/videogame`, game);
       return dispatch({
         type: POST_GAME,
         payload: {
@@ -77,7 +79,7 @@ export function postGame(game) {
 export function putGame(game) {
   return async function (dispatch) {
     try {
-      const MESSAGE = await AXIOS.put(`http://localhost:3001/videogame/${game.id}`, game);
+      const MESSAGE = await AXIOS.put(`${URL}/videogame/${game.id}`, game);
       return dispatch({
         type: PUT_GAME,
         payload: {
@@ -94,7 +96,7 @@ export function putGame(game) {
 export function deleteGame(id) {
   return async function (dispatch) {
     try {
-      const MESSAGE = await AXIOS.delete(`http://localhost:3001/videogame/${id}`);
+      const MESSAGE = await AXIOS.delete(`${URL}/videogame/${id}`);
       return dispatch({
         type: DELETE_GAME,
         payload:{
@@ -111,7 +113,7 @@ export function deleteGame(id) {
 export function getGenres() {
   return async function (dispatch) {
     try {
-      const JSON = await AXIOS.get('http://localhost:3001/genres');
+      const JSON = await AXIOS.get(`${URL}/genres`);
       const GENRES = JSON.data;
       return dispatch({
         type: GET_GENRES,
@@ -126,7 +128,7 @@ export function getGenres() {
 export function getPlatforms() {
   return async function (dispatch) {
     try {
-      const JSON = await AXIOS.get('http://localhost:3001/platforms');
+      const JSON = await AXIOS.get(`${URL}/platforms`);
       const PLATFORMS = JSON.data;
       return dispatch({
         type: GET_PLATFORMS,
