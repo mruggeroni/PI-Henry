@@ -107,9 +107,7 @@ export default function GameDetails(/* { match } */game) {
                         !game.form ?
                         <div className={s.cardContent_detail} >
                             <NavLink to="/home">
-                                <button>
-                                    <b>Volver</b>
-                                </button>
+                                <button className={s.button_back_detail} >Back</button>
                             </NavLink>
                         </div> :
                         <></>
