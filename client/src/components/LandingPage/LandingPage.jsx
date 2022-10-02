@@ -8,7 +8,7 @@ export default function LandingPage() {
         <div className={s.landingPage} >
             <h1 className={s.landingPageTitle} >SuperVideoGames App</h1>
             <Link to="/home" >
-                <button className={s.landingPageButton} >
+                <button className={`${s.landingPageButton} ${s.icon3d}`} >
                     <span>Start</span>
                 </button>
             </Link>

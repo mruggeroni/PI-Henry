@@ -22,7 +22,7 @@
     padding: 1em;
     width: 6.5rem;
     height: 5rem;
-    background-color: #7819af;
+    background-color: rgb(51, 51, 51);
     color: rgb(201, 201, 201);
     border-radius: 5rem;
     border-style: none;
@@ -30,16 +30,42 @@
     text-transform: uppercase;
     text-align: center;
     text-justify: auto;
-    font-weight: 1000;
+    font-weight: 800;
     cursor: pointer;
     font-size: large;
 }
 
 .landingPageButton:hover {
-    background-color: rgb(201, 201, 201);
-    color: #7819af;
-    border-color: #7819af;
-    border-style: solid;
-    border-width: 0.3rem;
-    transition: 200ms;
+    background-color: rgb(15, 15, 15);
+    transition: 500ms;
+}
+
+.icon3d {
+    padding: 10px;
+    -webkit-animation: icon3d 200ms 10;
+    animation: icon3d 200ms 10;
+    color: #fff;
+}
+
+.icon3d:hover {
+    -webkit-animation: icon3d 200ms infinite;
+    animation: icon3d 300ms infinite;
+}
+
+@keyframes icon3d {
+    0% {
+    text-shadow: 5px 4px rgba(244,67,54,1), -5px -6px rgba(33,150,243,1);
+    }
+    25% {
+    text-shadow: -5px -6px rgba(244,67,54,1), 5px 4px rgba(33,150,243,1);
+    }
+    50% {
+    text-shadow: 5px -4px rgba(244,67,54,1), -8px 4px rgba(33,150,243,1);
+    }
+    75% {
+    text-shadow: -8px -4px rgba(244,67,54,1), -5px -4px rgba(33,150,243,1);
+    }
+    100% {
+    text-shadow: -5px 0 rgba(244,67,54,1), 5px -4px rgba(33,150,243,1);
+    }
 }
