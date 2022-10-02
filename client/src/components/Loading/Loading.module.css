@@ -1,6 +1,14 @@
+.loadingDiv {
+    display: flex;
+    flex-direction: column;
+    position: absolute; 
+    margin: 0;
+    width: 100%;
+    height: auto;
+    z-index: 30;
+}
+
 .loading {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 1;
+    width: 25rem;
+    margin: 5rem auto auto auto;
 }
