@@ -17,25 +17,10 @@
 
 .content_home {
     position: relative;
-    z-index: 1;
 }
 
 .vid1_home {
-    margin-top: 0vh;
-    width: 100%;
+    margin: 0;
+    size: 100vmax;
+    position: fixed;
 }
-
-.vid2_home {
-    margin-top: 100vh;
-    width: 100%;
-}
-
-/* .vid3_home {
-    margin-top: 200vh;
-    width: 100%;
-}
-
-.vid4_home {
-    margin-top: 300vh;
-    width: 100%;
-} */

@@ -36,6 +36,9 @@ export default function Home() {
 
     const paginado = (pageNumber) => {
         setCurrentPage(pageNumber);
+        window.scrollTo({
+            top: 0,
+        });
     };
 
     const handleFilterSortChanges = (e) => {
@@ -51,13 +54,11 @@ export default function Home() {
     const O_F = useRef(""),
         G_F = useRef(""),
         S = useRef(""),
-        vid1 = useRef(),
-        vid2 = useRef();
+        vid1 = useRef();
 
     useEffect(() => {
         if (currentGames.length) {
             vid1.current.play();
-            vid2.current.play();
         };
     });
 
@@ -110,50 +111,37 @@ export default function Home() {
             ></video>
             {
                 currentGames.length ? 
-                <>
-                    <video 
-                        key="video2" 
-                        id="video2" 
-                        src={video} 
-                        type="video/mp4" 
-                        ref={vid2} 
-                        className={s.vid2_home} 
-                        autoplay 
-                        muted 
-                        loop 
-                    ></video>
-                    <div className={s.content_home} >
-                        <Pagination 
-                            numberOfAllGames={GAMES?.length} 
-                            gamesPerPage={gamesPerPage} 
-                            paginado={paginado}
-                            currentPage={currentPage} 
-                        />
-                        <div className={s.cards} >
-                            {
-                                currentGames.map(({ id, name, img, rating, genres, createdInDb}) => {
-                                    return (
-                                        <GameCard 
-                                            key={id} 
-                                            id={id} 
-                                            name={name} 
-                                            img={img} 
-                                            rating={rating} 
-                                            genres={genres} 
-                                            createdInDb={createdInDb}
-                                        />
-                                    )
-                                })
-                            }
-                        </div>
-                        <Pagination 
-                            numberOfAllGames={GAMES?.length} 
-                            gamesPerPage={gamesPerPage} 
-                            paginado={paginado}
-                            currentPage={currentPage} 
-                        />
+                <div className={s.content_home} >
+                    <Pagination 
+                        numberOfAllGames={GAMES?.length} 
+                        gamesPerPage={gamesPerPage} 
+                        paginado={paginado}
+                        currentPage={currentPage} 
+                    />
+                    <div className={s.cards} >
+                        {
+                            currentGames.map(({ id, name, img, rating, genres, createdInDb}) => {
+                                return (
+                                    <GameCard 
+                                        key={id} 
+                                        id={id} 
+                                        name={name} 
+                                        img={img} 
+                                        rating={rating} 
+                                        genres={genres} 
+                                        createdInDb={createdInDb}
+                                    />
+                                )
+                            })
+                        }
                     </div>
-                </> :
+                    <Pagination 
+                        numberOfAllGames={GAMES?.length} 
+                        gamesPerPage={gamesPerPage} 
+                        paginado={paginado}
+                        currentPage={currentPage} 
+                    />
+                </div> :
                 <Loading />
             }
         </div>
