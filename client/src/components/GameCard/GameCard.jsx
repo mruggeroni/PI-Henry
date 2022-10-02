@@ -31,36 +31,32 @@ export default function GameCard(props) {
             }
             <NavLink to={`/home/game/${props.id}`} className={s.link} >
                 <img src={`${props.img}`} alt={`${props.name}`} className={s.img} />
-                <h2 className={s.header} >
-                    <em>{props.name}</em>
-                </h2>
+                <h2 className={s.header} >{props.name}</h2>
                 <div className={s.cardContent} >
                     <p className={s.card_text} >
-                        <b>Generos: {
+                        {
                             props.genres?.reduce((text, genre) => text + (text ? " - " : " ") + genre, "")
-                        }</b>
+                        }
                     </p>
-                    <div className={s.card_rating} >
-                        <p className={s.card_text} >
-                            <b>{`${props.rating}`}</b>
-                        </p>
-                        <div>
-                            <span 
-                                className={Math.round(props.rating) >= 1 ? s.star_rating : ""} 
-                            >★</span>
-                            <span 
-                                className={Math.round(props.rating) >= 2 ? s.star_rating : ""} 
-                            >★</span>
-                            <span 
-                                className={Math.round(props.rating) >= 3 ? s.star_rating : ""} 
-                            >★</span>
-                            <span 
-                                className={Math.round(props.rating) >= 4 ? s.star_rating : ""} 
-                            >★</span>
-                            <span 
-                                className={Math.round(props.rating) === 5 ? s.star_rating : ""} 
-                            >★</span>
-                        </div>
+                </div>
+                <div className={s.card_rating} >
+                    <p className={s.card_text} >{`${props.rating}`}</p>
+                    <div>
+                        <span 
+                            className={Math.round(props.rating) >= 1 ? s.star_rating : ""} 
+                        >★</span>
+                        <span 
+                            className={Math.round(props.rating) >= 2 ? s.star_rating : ""} 
+                        >★</span>
+                        <span 
+                            className={Math.round(props.rating) >= 3 ? s.star_rating : ""} 
+                        >★</span>
+                        <span 
+                            className={Math.round(props.rating) >= 4 ? s.star_rating : ""} 
+                        >★</span>
+                        <span 
+                            className={Math.round(props.rating) === 5 ? s.star_rating : ""} 
+                        >★</span>
                     </div>
                 </div>
             </NavLink>
