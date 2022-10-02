@@ -1,22 +1,20 @@
 .content_about {
     background-color: black;
-    position: relative;
     overflow: hidden;
     width: auto;
-    height: 100vh;
     color: rgb(201, 201, 201);
 }
 
 .content_text_about {
     position: relative;
-    margin: auto auto auto auto;
+    margin: auto;
     background-color: rgba(31, 31, 31, 0.904);
     display: flex;
     flex-direction: column;
     justify-items: center;
     justify-content: flex-start;
-    width: 50vw;
-    height: 100vh;
+    width: 50rem;
+    height: 40rem;
     z-index: 1;
 }
 
@@ -28,8 +26,13 @@
 }
 
 .image_about {
-    height: auto;
-    width: 15vw;
+    height: 8rem;
     border-radius: 1rem;
-    margin: 0 auto auto auto;
+    margin: auto;
+}
+
+.video_about {
+    margin: 0;
+    size: 100vmax;
+    position: fixed;
 }

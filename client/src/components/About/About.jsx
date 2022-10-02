@@ -16,7 +16,18 @@ export default function About() {
 
     return (
         <div className={s.content_about} >
-            <video key="video" id="video" ref={vid} src={video} type="video/mp4" autoplay muted loop poster={video} ></video>
+            <video 
+                className={s.video_about}
+                key="video" 
+                id="video" 
+                ref={vid} 
+                src={video} 
+                type="video/mp4" 
+                autoplay 
+                muted 
+                loop 
+                poster={video} 
+            ></video>
             <div className={s.content_text_about} >
                 <h1>About</h1>
                 <p className={s.description_about} >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus odio officiis ea saepe commodi nobis ullam, dolores quibusdam! Pariatur, a voluptatem. Ullam, eligendi laborum! Dolor nostrum perferendis et cupiditate fuga!
