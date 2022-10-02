@@ -1,0 +1,69 @@
+.form {
+    align-items: center;
+    display: flex;
+}
+
+.items {
+    border-radius: 1rem;
+    text-align: center;
+    height: 1.2rem;
+    border: none;
+}
+
+.search {
+    background-color: rgb(84, 73, 85);
+    color: lightgray;
+    padding-left: 1rem;
+    padding-right: 5rem;
+    display: inline;
+    width: 6.8rem;
+    border-style: solid;
+    border-color: rgb(84, 73, 85);
+    border-width: 0.15rem;
+}
+
+.search::placeholder {
+    color: rgb(155, 155, 155);
+}
+
+.search:focus {
+    border-color: rgb(161, 0, 201);
+    outline-style: none;
+}
+
+.buttonSearch {
+    background-color: rgba(77, 22, 99, 0.904);
+    color: lightgray;
+    display: inline-block;
+    position: absolute;
+    top: 0.55rem;
+    margin-left: 9.1rem;
+    height: 1.5rem;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    transition: all 400ms ease-out;
+}
+
+.buttonSearch:hover {
+    background-color: rgba(131, 0, 87, 0.904);
+    color: white;
+}
+
+.buttonDelete {
+    background-color: rgba(84, 73, 85, 0);
+    color: lightgray;
+    display: inline-block;
+    position: absolute;
+    top: 0.65rem;
+    margin-left: 7.9rem;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 200ms ease-out;
+}
+
+.buttonDelete:hover {
+    color: rgb(230, 0, 0);
+}
