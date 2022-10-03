@@ -204,9 +204,13 @@ export default function GameCreation() {
             </div>
             <div className={s.card_creation} >
                 <form /* onSubmit={(e) => handleSubmit(e)} */ >
-                    <div>
-                        <label htmlFor="name">Name</label>
+                    <div className={s.div_item_form} >
+                        <label 
+                            htmlFor="name"
+                            className={s.label_creation}
+                        >Name</label>
                         <input 
+                            className={`${s.input_creation} ${!errors.name ? s.input_creation_valid : s.input_creation_invalid}`}
                             type="text" 
                             key="name"
                             id="name"
@@ -216,52 +220,63 @@ export default function GameCreation() {
                             minLength={5}
                             maxLength={20}
                             value={input.name} 
+                            required
                             onChange={(e) => handleChange(e)}
                         />
                         {
                             errors.name ?
                             <p className={s.errors} >{errors.name}</p> :
-                            <></>
+                            <p className={`${s.errors} ${s.space_error}`} ></p>
                         }
                     </div>
-                    <div>
-                        <label htmlFor="img">Image</label>
-                        <input 
-                            type="text"/* "file" */ 
-                            key="img"
-                            id="img"
-                            name="img" 
-                            title="add main image to the new videogame"
-                            placeholder="https://file.jpg"
-                            /* accept=".jpg,.png,.svg" */
-                            ref={refImage}
-                            /* value={input.img} */ 
-                            onChange={(e) => handleChange(e)}
-                        />
-                        <img 
-                            className={s.img_creation}
-                            src={input.img} 
-                            alt="preview_image" 
-                            onError={(e) => {
-                                setErrors({
-                                    ...errors,
-                                    img: 'Image is not rendering.',
-                                });
-                                setInput({
-                                    ...input,
-                                    img: imagenDefault,
-                                });
-                            } /* tambien se puede pasar un e.target.id al validate, creando alli otro caso para este error*/}
-                        />
+                    <div className={s.div_item_form} >
+                        <label 
+                            htmlFor="img"
+                            className={s.label_creation}
+                        >Image</label>
+                        <div className={s.img_div_content} >
+                            <input 
+                                className={s.input_creation}
+                                type="text"/* "file" */ 
+                                key="img"
+                                id="img"
+                                name="img" 
+                                title="add main image to the new videogame"
+                                placeholder="https://file.jpg"
+                                /* accept=".jpg,.png,.svg" */
+                                ref={refImage}
+                                /* value={input.img} */ 
+                                onChange={(e) => handleChange(e)}
+                            />
+                            <img 
+                                className={s.img_creation}
+                                src={input.img} 
+                                alt="preview_image" 
+                                onError={(e) => {
+                                    setErrors({
+                                        ...errors,
+                                        img: 'Image is not rendering.',
+                                    });
+                                    setInput({
+                                        ...input,
+                                        img: imagenDefault,
+                                    });
+                                } /* tambien se puede pasar un e.target.id al validate, creando allí otro caso para este error*/}
+                            />
+                        </div>
                         {
                             errors.img ?
-                            <p className={s.image_error} >{errors.img}</p> :
-                            <></>
+                            <p className={`${s.errors} ${s.image_error}`} >{errors.img}</p> :
+                            <p className={`${s.errors} ${s.space_error}`} ></p>
                         }
                     </div>
-                    <div>
-                        <label htmlFor="description">Description</label>
+                    <div className={s.div_item_form} >
+                        <label 
+                            htmlFor="description"
+                            className={s.label_creation}
+                        >Description</label>
                         <textarea 
+                            className={`${s.input_creation} ${!errors.description ? s.input_creation_valid : s.input_creation_invalid}`}
                             key="description"
                             id="description"
                             name="description" 
@@ -269,17 +284,22 @@ export default function GameCreation() {
                             placeholder="Description"
                             maxLength={500}
                             value={input.description} 
+                            required
                             onChange={(e) => handleChange(e)}
                         />
                         {
                             errors.description ?
                             <p className={s.errors} >{errors.description}</p> :
-                            <></>
+                            <p className={`${s.errors} ${s.space_error}`} ></p>
                         }
                     </div>
-                    <div>
-                        <label htmlFor="rating">Rating</label>
+                    <div className={s.div_item_form} >
+                        <label 
+                            htmlFor="rating"
+                            className={s.label_creation}
+                        >Rating</label>
                         <input 
+                            className={`${s.input_creation} ${!errors.rating ? s.input_creation_valid : s.input_creation_invalid}`}
                             type="range" 
                             key="ratingR"
                             id="ratingR"
@@ -289,9 +309,11 @@ export default function GameCreation() {
                             max={5}
                             step={0.01}
                             value={input.rating} 
+                            required
                             onChange={(e) => handleChange(e)}
                         />
                         <input 
+                            className={`${s.input_creation} ${!errors.rating ? s.input_creation_valid : s.input_creation_invalid}`}
                             type="number" 
                             key="ratingN"
                             id="ratingN"
@@ -306,30 +328,39 @@ export default function GameCreation() {
                         {
                             errors.rating ?
                             <p className={s.errors} >{errors.rating}</p> :
-                            <></>
+                            <p className={`${s.errors} ${s.space_error}`} ></p>
                         }
                     </div>
-                    <div>
-                        <label htmlFor="released">Released</label>
+                    <div className={s.div_item_form} >
+                        <label 
+                            htmlFor="released"
+                            className={s.label_creation}
+                        >Released</label>
                         <input 
+                            className={`${s.input_creation} ${s.input_released} ${!errors.released ? s.input_creation_valid : s.input_creation_invalid}`}
                             type="date" 
                             key="released"
                             id="released"
                             name="released" 
                             title="released of the new videogame"
                             value={input.released} 
+                            required
                             onChange={(e) => handleChange(e)}
                         />
                         {
                             errors.released ?
                             <p className={s.errors} >{errors.released}</p> :
-                            <></>
+                            <p className={`${s.errors} ${s.space_error}`} ></p>
                         }
                     </div>
-                    <div className={s.content_creation} >
-                        <div>
-                            <label htmlFor="genres">Genres</label>
+                    <div className={`${s.content_creation} ${s.content_select}`} >
+                        <div className={`${s.div_item_form} ${s.div_item_select}`} >
+                            <label 
+                                htmlFor="genres"
+                                className={s.label_creation}
+                            >Genres</label>
                             <select 
+                                className={`${s.input_creation} ${!errors.genres ? s.input_creation_valid : s.input_creation_invalid}`}
                                 key="genres"
                                 id="genres"
                                 name="genres"
@@ -353,7 +384,7 @@ export default function GameCreation() {
                             {
                                 errors.genres ?
                                 <p className={s.errors} >{errors.genres}</p> :
-                                <></>
+                                <p className={`${s.errors} ${s.space_error}`} ></p>
                             }
                             <div>
                                 {
@@ -372,9 +403,13 @@ export default function GameCreation() {
                                 }
                             </div>
                         </div>
-                        <div>
-                            <label htmlFor="platforms">Platforms</label>
+                        <div className={`${s.div_item_form} ${s.div_item_select}`} >
+                            <label 
+                                htmlFor="platforms"
+                                className={s.label_creation}
+                            >Platforms</label>
                             <select 
+                                className={`${s.input_creation} ${!errors.platforms ? s.input_creation_valid : s.input_creation_invalid}`}
                                 key="platforms"
                                 id="platforms"
                                 name="platforms"
@@ -398,7 +433,7 @@ export default function GameCreation() {
                             {
                                 errors.platforms ?
                                 <p className={s.errors} >{errors.platforms}</p> :
-                                <></>
+                                <p className={`${s.errors} ${s.space_error}`} ></p>
                             }
                             <div>
                                 {
@@ -418,43 +453,35 @@ export default function GameCreation() {
                             </div>
                         </div>
                     </div>
+                    <div className={`${s.submit_cancel} ${s.content_buttons}`} >
+                        <img 
+                            className={s.buttons_img_creation}
+                            src={submit} 
+                            alt="image_submit" 
+                        />
+                        <img 
+                            className={s.buttons_img_creation}
+                            src={cancel} 
+                            alt="image_cancel" 
+                        />
+                    </div>
                     <div className={s.submit_cancel} >
-                        <input 
+                        <button 
                             id="submit" 
                             name="submit"
                             title="Submit"
-                            type="image" 
-                            className={`${s.buttons_creation} ${s.submit_creation}`}
+                            className={`${s.background_buttons} ${!(Object.keys(errors)?.filter(e => e !== "img").length || (Object.keys(input)?.length !== 7 || !input.genres?.length || !input.platforms?.length)) ? s.submit_creation : s.submit_creation_disabled}`} 
                             onClick={(e) => handleSubmit(e)}
                             disabled={Object.keys(errors)?.filter(e => e !== "img").length || (Object.keys(input)?.length !== 7 || !input.genres?.length || !input.platforms?.length)} 
-                            src={submit} 
-                            alt={id ? "update" : "Create"} 
-                        />
+                        ></button>
                         <NavLink to='/home' >
-                            <input 
+                            <button 
                                 id="cancel" 
                                 name="cancel"
                                 title="Cancel" 
-                                type="image" 
-                                className={`${s.buttons_creation} ${s.cancel_creation}`}
-                                src={cancel} 
-                                alt="cancel" 
-                            />
+                                className={`${s.background_buttons} ${s.cancel_creation}`} 
+                            ></button>
                         </NavLink>
-                        {/* <button 
-                            type='submit' 
-                            id="submit" 
-                            name="submit"
-                            disabled={Object.keys(errors).length || !input.name || !input.description || !input.released || !input.rating || !input.genres.length || !input.platforms.length} 
-                        >
-                            <b>{id ? "update" : "Create"}</b>
-                        </button>
-                        <button 
-                            id="cancel" 
-                            name="cancel" 
-                        >
-                            <b>Cancel</b>
-                        </button> */}
                     </div>
                 </form>
                 <Prompt 

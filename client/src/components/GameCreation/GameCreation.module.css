@@ -6,14 +6,20 @@
     justify-content: space-between;
 }
 
+.content_select {
+    width: 100%;
+}
+
 .detail_creation {
-    width: 38vw;
+    width: 35rem;
     height: auto;
-    margin: auto;
+    margin: 0 auto auto auto;
+    position: sticky;
+    top: 2rem;
 }
 
 .card_creation {
-    width: 40vw;
+    width: 40rem;
     height: auto;
     justify-items: center;
     justify-content: center;
@@ -23,13 +29,40 @@
     color:  rgb(201, 201, 201);
 }
 
+.img_div_content {
+    display: flex;
+    align-items: center;
+}
+
 .img_creation {
-    display: block;
-    width: 20%;
+    width: 5rem;
     height: auto;
     object-fit: cover;
     border-radius: 0.4rem;
     margin: auto;
+}
+
+.div_item_form {
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+    border-style: solid;
+    border-radius: 0.5rem;
+    border-color: rgb(41, 41, 41);
+    margin: auto auto 2rem auto;
+    padding: 0.5rem 4rem 0.5rem 4rem;
+}
+
+.div_item_select {
+    width: 10rem;
+    margin-top: 0;
+}
+
+.label_creation {
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
 }
 
 .options_buttons {
@@ -41,52 +74,126 @@
     border-radius: 0.75rem;
     border-style: hidden;
     cursor: pointer;
+    transition: all 300ms ease-out;
 }
 
 .options_buttons:hover {
     background-color: rgb(150, 0, 0);
-    transition: 300ms;
+}
+
+.input_creation {
+    background-color: rgba(100, 100, 100, 0.5);
+    border-radius: 1rem;
+    border-color: rgba(20, 20, 20, 0.5);
+    text-align: center;
+    font-weight: 600;
+    color: lightgray;
+    padding: 0.3rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.input_creation:focus {
+    border-style: solid;
+    border-width: 0.15rem;
+    outline: none;
+}
+
+.input_creation_valid:focus {
+    border-color: rgb(0, 150, 0);
+}
+
+.input_creation_invalid:focus {
+    border-color: rgb(221, 1, 1);
+}
+
+.input_released {
+    cursor: text;
+}
+
+.errors {
+    background-color: rgba(31, 31, 31, 0.5);
+    color: rgb(211, 1, 1);
+    border-style: solid;
+    border-radius: 0.5rem;
+    border-color: rgb(211, 1, 1);
+    border-width: 0.1rem;
+    padding: 1rem;
+}
+
+.image_error {
+    color: rgb(221, 145, 3);
+    border-color: rgb(221, 145, 3);
+}
+
+.errors:invalid {
+    border-color: rgb(221, 1, 1);
+}
+
+.space_error {
+    height: 1.3rem;
+    border-color: rgb(70, 70, 70);
+}
+
+.content_buttons {
+    background-color: rgb(31, 31, 31);
+    border-radius: 2rem;
 }
 
 .submit_cancel {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     margin: 1rem;
 }
 
-.buttons_creation {
-    height: 10vh;
+.buttons_img_creation {
+    position: relative;
+    height: 6rem;
     width: auto;
-    padding: 0.25rem;
-    border-radius: 100%;
-    border-style: solid;
-    border-width: 0.3rem;
-    background-color: rgb(44, 44, 44);
+    z-index: 1;
+    pointer-events: none;
 }
 
-.errors {
-    color: red;
+.background_buttons {
+    position: relative;
+    background-color: lightgray;
+    height: 2.2rem;
+    width: 4.5rem;
+    bottom: 5.6rem;
+    border-radius: 0.8rem;
+    border-style: none;
+    cursor: pointer;
+    box-shadow: 0 0 1rem lightgray;
+    transition: all 300ms ease-out;
 }
 
-.image_error {
-    color: orange;
+.background_buttons:disabled {
+    cursor: default;
+}
+
+.background_buttons:hover {
+    box-shadow: 0 0 1rem rgba(211, 211, 211, 0);
 }
 
 .submit_creation {
-    border-color: rgb(21, 199, 15);
+    transition: all 300ms ease-out;
+}
+
+.submit_creation:hover {
+    background-color: rgb(9, 255, 0);
+    box-shadow: 0 0 1.5rem rgba(9, 255, 0, 0.801);
+}
+
+.submit_creation_disabled:hover {
+    background-color: gray;
+    transition: 300ms;
 }
 
 .cancel_creation {
-    border-color: rgb(235, 14, 14);
-}
-
-.buttons_creation:hover {
-    background-color: rgb(21, 199, 15);
-    transition: 500ms;
+    transition: all 300ms ease-out;
 }
 
 .cancel_creation:hover {
-    background-color: rgb(235, 14, 14);
-    transition: 500ms;
+    background-color: rgb(255, 0, 15);
+    box-shadow: 0 0 1.5rem rgb(255, 0, 17);
 }
-
