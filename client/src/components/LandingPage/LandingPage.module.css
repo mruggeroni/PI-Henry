@@ -6,19 +6,22 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    display: relative;
 }
 
 .landingPageTitle {
-    margin-top: 20vh;
+    margin-top: 15vh;
     color: rgb(201, 201, 201);
-    margin-bottom: 43vh;
+    font-size: 5rem;
+    font-family: Verdana, sans-serif;
+    text-shadow: 0.25rem 0.25rem 0.4rem rgb(162, 20, 190);
+    text-transform: uppercase;
 }
 
 .landingPageButton {
+    position: absolute;
+    bottom: 8.3rem;
+    transform: translate(-50%);
     padding: 1em;
     width: 6.5rem;
     height: 5rem;
@@ -26,18 +29,18 @@
     color: rgb(201, 201, 201);
     border-radius: 5rem;
     border-style: none;
-    align-content: center;
     text-transform: uppercase;
     text-align: center;
     text-justify: auto;
     font-weight: 800;
     cursor: pointer;
     font-size: large;
+    transition: all 200ms ease-in;
 }
 
 .landingPageButton:hover {
     background-color: rgb(15, 15, 15);
-    transition: 500ms;
+    box-shadow: 0 0 1.5rem rgb(255, 0, 170);
 }
 
 .icon3d {
