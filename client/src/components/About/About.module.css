@@ -1,6 +1,5 @@
 .content_about {
     background-color: black;
-    overflow: hidden;
     width: auto;
     color: rgb(201, 201, 201);
 }
@@ -14,7 +13,8 @@
     justify-items: center;
     justify-content: flex-start;
     width: 50rem;
-    height: 40rem;
+    min-height: 92.2vmin;
+    height: auto;
     z-index: 1;
 }
 
@@ -28,7 +28,7 @@
 .image_about {
     height: 8rem;
     border-radius: 1rem;
-    margin: auto;
+    margin: 2rem auto 3rem auto;
 }
 
 .video_about {

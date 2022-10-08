@@ -5,7 +5,6 @@ import s from './About.module.css';
 
 
 export default function About() {
-    // const video = "https://cdn.pixabay.com/vimeo/248644905/Black%20-%2013495.mp4?rendition=source&expiry=1657605315&hash=b6bf7bc6225dc12d5e636bd0e6ee1a03775cb077";
     const video = "https://res.cloudinary.com/dkf1okbsr/video/upload/v1663212309/PI/Black-Loop_r4166h.mp4";
     const image = "https://res.cloudinary.com/dkf1okbsr/image/upload/v1663212306/PI/page_icon_ocrogz.jpg";
     
@@ -26,15 +25,62 @@ export default function About() {
                 autoplay 
                 muted 
                 loop 
-                poster={video} 
+                preload="metadata"
             ></video>
             <div className={s.content_text_about} >
                 <h1>About</h1>
-                <p className={s.description_about} >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus odio officiis ea saepe commodi nobis ullam, dolores quibusdam! Pariatur, a voluptatem. Ullam, eligendi laborum! Dolor nostrum perferendis et cupiditate fuga!
-                Neque autem perspiciatis cupiditate tenetur officiis at asperiores accusamus, dolorem ipsam quibusdam eum explicabo alias eaque vel animi nesciunt impedit quos culpa ad exercitationem. Quas eius blanditiis atque molestias iste.
-                Vitae ad dolores hic et, consectetur provident voluptate consequuntur sequi earum quos modi ea. Quia earum placeat tempore quasi voluptate veniam soluta excepturi quos, voluptatibus cumque voluptatem rerum nostrum aliquid?
-                Quas voluptas a iste, eaque ullam laborum veritatis quibusdam non amet error dignissimos repellat repudiandae velit ea suscipit voluptates aspernatur adipisci vero eum odio quod? Explicabo, deserunt debitis! Consequuntur, beatae.
-                Neque consequuntur nulla blanditiis cum ea temporibus unde, voluptatem earum sequi. Magnam ipsum eius ut autem beatae totam voluptas dignissimos accusantium! Exercitationem nobis quod ab deserunt facere cumque eos neque.</p>
+                <div className={s.description_about} >
+                    <h2><b>Objectives</b></h2>
+                    <p>
+                        Create an application where you can display game data, filter by properties, search and interact with a database / API.
+                        <br></br>
+                        The database was connected to the <a href="https://rawg.io/apidocs" >rawg</a> game external API.
+                    </p>
+                    <h2><b>Technologies</b></h2>
+                    <ul>
+                        <li>JavaScript</li>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>SQL</li>
+                        <li>React.js</li>
+                        <li>Redux</li>
+                        <li>Node.js</li>
+                        <li>Express.js</li>
+                        <li>SequelizeORM</li>
+                        <li>PostgreSQL</li>
+                        <li>Git</li>
+                        <li>DotEnv</li>
+                        <li>Axios</li>
+                        <li>Postman</li>
+                    </ul>
+                    <h2><b>Used Knowledges</b></h2>
+                    <ul>
+                        <li>HTTP request.</li>
+                        <li>REST API construction.</li>
+                        <li>CRUD (create, read, update and delete).</li>
+                        <li>Construction of relational database with postgreSQL.</li>
+                        <li>Join the server to the database with sequelize ORM.</li>
+                        <li>Join the server to the external API (with API key authentication) with sequelize ORM.</li>
+                        <li>Back-end validations.</li>
+                        <li>Use of terminal / Console.</li>
+                        <li>Error management.</li>
+                        <li>Test of rutes with postman.</li>
+                        <li>Carry out documentation of rutes with postman.</li>
+                        <li>Asynchronous request.</li>
+                        <li>DOM manipulation.</li>
+                        <li>Componentization principle.</li>
+                        <li>Management of global and local states.</li>
+                        <li>Component life cycle.</li>
+                        <li>Front-end validations.</li>
+                        <li>Controlled forms.</li>
+                        <li>Global and module styles.</li>
+                        <li>Styles and effects with pure CSS3.</li>
+                        <li>Good practices with HTML5 and ES6.</li>
+                        <li>Functional programming.</li>
+                        <li>Declarative programming.</li>
+                        <li>Documentations learning.</li>
+                    </ul>
+                </div>
                 <img className={s.image_about} src={image} alt="icon_image" />
             </div>
         </div>

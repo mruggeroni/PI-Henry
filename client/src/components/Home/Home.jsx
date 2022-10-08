@@ -105,9 +105,10 @@ export default function Home() {
                 type="video/mp4" 
                 ref={vid1} 
                 className={s.vid1_home} 
-                autoplay 
+                autoplay
                 muted 
                 loop 
+                preload="metadata"
             ></video>
             {
                 currentGames.length ? 
